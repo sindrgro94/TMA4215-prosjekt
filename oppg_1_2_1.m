@@ -26,7 +26,7 @@ fprintf('(sum(b_i*c_i^2) = 1/3):\n')
 fprintf(' - b    => %s\n',simplify(sum(b.*c.^2)));
 fprintf(' - bHat => ');
 disp(simplify(sum(bHat.*c.^2)));
-fprintf('bHat er dermed orden 2.\n')
+fprintf('Feilestimeringsmetoden er dermed orden 2 for "gamma" != 1/2 +- 1/(2*sqrt(3)).\n')
 
 fprintf('\n\n');
 fprintf('(sum(b_i*a_ij*c_j) = 1/6):\n');
@@ -36,4 +36,4 @@ fprintf('\n\n')
 fprintf('test order 4:\n\n')
 fprintf('(sum(b_i*c_i^3) = 1/4):\n')
 fprintf(' - b    => %s\n',simplify(sum(b.*c.^3)));
-fprintf('b er dermed orden 3.\n')
+fprintf('Advancing method er dermed orden 3 for "gamma" != 1/4.\n')
