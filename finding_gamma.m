@@ -15,7 +15,7 @@ h = sym('h');
 z = sym('z');
 %k1 = sym('k1'); k2 = sym('k2'); k3 = sym('k3'); k4 = sym('k4');
 k1 = l*yn;
-%k2 = l*(yn+h*g*k1+h*g*k2);
+%k2 = l*(yn+h*g*k1+h*g*k2); løser denne for k2
 k2 = l*yn*(1+h*g*l)/(1-h*g*l);
 k3 = l*(yn+h*(A(3,1)*k1+A(3,2)*k2))/(1-h*l*A(3,3));
 k4 = l*(yn+h*(A(4,1)*k1+A(4,2)*k2+A(4,3)*k3))/(1-h*l*A(4,4));
