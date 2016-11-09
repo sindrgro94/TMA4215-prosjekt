@@ -30,6 +30,8 @@ k4 = l*(yn+h*(A(4,1)*k1+A(4,2)*k2+A(4,3)*k3))/(1-h*l*A(4,4));
 yn_1= simplify(yn+h*(b(1)*k1+b(2)*k2+b(3)*k3+b(4)*k4));
 yn_1 = subs(yn_1, l*h, z);
 R(z) = yn_1/yn;
+R_inf = limit(R(z),inf);
+
 
 %ved å la z -> inf har jeg kommet frem til at
 %R(inf) = -(6*g^3+18g^2-9g+1)/6g^3 hvilket gir
