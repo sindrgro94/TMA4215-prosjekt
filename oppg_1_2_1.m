@@ -23,6 +23,10 @@ fprintf(' - bHat => %s\n',simplify(sum(bHat.*c)));
 fprintf('\n\n')
 fprintf('test order 3:\n\n')
 fprintf('(sum(b_i*c_i^2) = 1/3):\n')
+%%
+% 
+% $$e^{\pi i} + 1 = 0$$
+% 
 fprintf(' - b    => %s\n',simplify(sum(b.*c.^2)));
 fprintf(' - bHat => ');
 disp(simplify(sum(bHat.*c.^2)));
