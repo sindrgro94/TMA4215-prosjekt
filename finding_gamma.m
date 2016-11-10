@@ -1,4 +1,5 @@
-%finding gamma
+function x = finding_gamma()
+
 %% Establishes the butcher tableu 
 g = sym('g','real'); %gamma
 c = [0; 2*g; 1; 1];
@@ -36,10 +37,17 @@ Rh(z,g) = yn_1h/yn;
 R_inf(g) = limit(R(z,g),inf);
 R_infh(g) = limit(Rh(z,g),inf);
 %% Newtons method
-
-
+x = 0.4;
+differ = 0.4;
+dR_inf = diff(R_inf,g);
+while abs(differ) > (10^4)*eps
+    x_np = x-R_inf(x)/dR_inf(x);
+    differ = x_np-x;
+    x = x_np;
+end
 %ved å la z -> inf har jeg kommet frem til at
 %R(inf) = -(6*g^3+18g^2-9g+1)/6g^3 hvilket gir
 %g = 0.27
-
+x = double(x);
+end
 
