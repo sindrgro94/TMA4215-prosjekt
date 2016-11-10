@@ -1,5 +1,5 @@
-% TMA4215 prosjekt 
-% Oppgave 1-2
+% TMA4215 project 
+% task 1-2
 
 %% setter konstanter
 %g = sym('g','real');    % gamma
@@ -29,11 +29,11 @@ R2z = subs(R2, g*h, z)
 R1Inf = limit(R1z, z, Inf)
 R2Inf = limit(R2z, z, Inf)
 
-%% Om A var invertibel /ikke-singulær
+%% Om A var invertibel /ikke-singul??r
 %R1InfI = 1 - b'*inv(A)*one
 [V,D] = eig(A)
 
-%% Newtons metode for å regne ut gamma
+%% Newtons metode for ?? regne ut gamma
 g = 0.05;
 g_old = 100;
 %g_true = 0.0623776;

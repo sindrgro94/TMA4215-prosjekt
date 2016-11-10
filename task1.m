@@ -1,4 +1,4 @@
-%%%oppgave 1-2-1
+%%%task 1
 g = sym('g','real'); %gamma
 c = [0; 2*g; 1; 1];
 bHat = [(-4*g^2+6*g-1)/(4*g); (-2*g+1)/(4*g); g; 0];
