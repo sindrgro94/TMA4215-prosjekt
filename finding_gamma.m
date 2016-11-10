@@ -45,9 +45,9 @@ while abs(differ) > (10^4)*eps
     differ = x_np-x;
     x = x_np;
 end
-%ved å la z -> inf har jeg kommet frem til at
-%R(inf) = -(6*g^3+18g^2-9g+1)/6g^3 hvilket gir
-%g = 0.27
 x = double(x);
+%% R_hat solution
+y = solve(R_infh,g);
+y_ret = y(1);
 end
 
