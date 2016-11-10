@@ -1,5 +1,5 @@
 function [tnext, ynext, le, iflag] = onestep(f,jac,tn,yn,h,Tolit)
-g = 0.47;
+g = 0.435866762;
 %for test example:
 %f = @(t,y) [t - 2*y(1) + y(2);t + y(1)- 2*y(2) + 3];
 %jac = jacobi('test')

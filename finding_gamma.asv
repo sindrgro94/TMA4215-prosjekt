@@ -31,11 +31,11 @@ yn_1= simplify(yn+h*(b(1)*k1+b(2)*k2+b(3)*k3+b(4)*k4));
 yn_1h = simplify(yn+h*(bHat(1)*k1+bHat(2)*k2+bHat(3)*k3+bHat(4)*k4));
 yn_1 = subs(yn_1, l*h, z);
 yn_1h = subs(yn_1h,l*h,z);
-R(z,g) = yn_1/yn;
-Rh(z,g) = yn_1h/yn;
-R_inf(g) = limit(R(z,g),inf);
-R_infh(g) = limit(Rh(z,g),inf);
-%% Newtons method
+R(z) = yn_1/yn;
+Rh(z) = yn_1h/yn;
+R_inf = limit(R(z),inf);
+
+%% Creating Stability function Rhat(z)
 
 
 %ved å la z -> inf har jeg kommet frem til at
