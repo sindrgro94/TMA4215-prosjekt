@@ -10,7 +10,7 @@ f1(y1,y2,t) = -2*y1+y2+t;
 f2(y1,y2,t) = y1-2*y2+t+3;
 J = [diff(f1,y1),diff(f1,y2);...
      diff(f2,y1),diff(f2,y2)];
- jac = J;
+ jac = J
 elseif strcmp(name,'van der pol')
 %Jacobi Van der Pol equation
 mu = 5;
