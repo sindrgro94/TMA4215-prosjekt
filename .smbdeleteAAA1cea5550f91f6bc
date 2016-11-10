@@ -1,0 +1,72 @@
+<<<<<<< Updated upstream:task2.m~
+% TMA4215 project 
+% task 1-2
+=======
+
+% TMA4215 prosjekt 
+% Oppgave 1-2
+>>>>>>> Stashed changes:oppg_1_2_2.m
+
+%% setter konstanter
+%g = sym('g','real');    % gamma
+syms h g  z   step           % gjer det samme som sym('variabel')?
+c = [0; 2*g; 1; 1];
+
+%% setter konstanter
+bHat = [(-4*g^2+6*g-1)/(4*g); (-2*g+1)/(4*g); g; 0];
+b = [(6*g-1)/(12*g); -1/(12*g*(2*g-1)); (-6*g^2+6*g-1)/(3*(2*g-1)); g];
+A = [0,0,0,0;...
+    g,g,0,0;...
+    (-4*g^2+6*g-1)/(4*g), (-2*g+1)/(4*g), g, 0;...
+    (6*g-1)/(12*g), -1/(12*g*(2*g-1)), (-6*g^2+6*g-1)/(3*(2*g-1)), g];
+I = eye(4);
+one = ones(4);
+%% Regner ut stabilitetsfunksjoner
+R1intermediate = 1 + b' * inv(I - h*A)*one;
+R2intermediate = 1 + bHat' * inv(I - h*A)*one;
+fprintf('\n\n')
+fprintf('Utregna og forenkla stabilitetsfunksjon R1:\n\n')
+R1 = simplify(sum(R1intermediate))
+fprintf('Utregna og forenkla stabilitetsfunksjon R1:\n\n')
+R2 = simplify(sum(R2intermediate))
+%% Bytter ut gh med z i stab.funksjoner
+R1z = subs(R1, g*h, z)
+R2z = subs(R2, g*h, z)
+
+%% Regner ut stabilitetskonstanter mhp. z
+R1Inf = limit(R1z, z, Inf)
+R2Inf = limit(R2z, z, Inf)
+
+<<<<<<< Updated upstream:task2.m~
+%% Om A var invertibel /ikke-singul??r
+%R1InfI = 1 - b'*inv(A)*one
+[V,D] = eig(A)
+
+%% Newtons metode for ?? regne ut gamma
+g = 0.05;
+g_old = 100;
+=======
+%% Finn egenverdier og egenvektorer for singulær matrise A
+%R1InfI = 1 - b'*inv(A)*one
+[V,D] = eig(A)
+
+%% Newtons metode for å regne ut gamma
+R1step = subs(R1z, h, step)
+step = 0.4;
+step_old = 10;
+>>>>>>> Stashed changes:oppg_1_2_2.m
+%g_true = 0.0623776;
+iteration = 0;
+while abs(step_old - step) > 10^-3 && step ~= 0
+    step_old = step;
+    step = step - (R1step / diff(R1step));
+    iteration = iteration + 1;
+    %fprintf('Iteration %d: step=%.20, error=%.20f\n', iteration, step);
+    fprintf('Iteration %d: step= , error= \n', iteration, step);
+    pause;
+end
+%% Skrapseksjon
+%term1 = inv(I - h*A)
+%result = b' * term1
+%jiha = 1 + term1
+%enkel = simplify(sum(jiha))
