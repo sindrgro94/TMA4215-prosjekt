@@ -18,6 +18,7 @@ function [tnext, ynext, le, iflag] = onestep(f,jac,tn,yn,h,Tolit)
 [A, c, g, s, bHat, b] = method();
 m = length(yn);
 maxIterations = 3;
+
 %% Newton iteration for finding stage values Y1, Y2, Y3, Y4
 % Initializing Y to length of Y_0 vector
 Y = zeros(m,4);
@@ -26,21 +27,26 @@ Y(:,1) = yn';
 I = eye(size(jac));
 K = zeros(m,4);
 K(:,1) = Y(:,1);
+J = (I - h*g*jac);
 %% Calculating Yi
 for i = 2:4
     DY = Inf;
     iteration = 0;
 % Finding Ki
+
     K(:,i) = Y(:,1);
     for j = 1:i-1
         K(:,i) = K(:,i) + h*A(i,j)*f(tn + c(j)*h, Y(:,j));
     end
+
 % Finding Yi nummericaly
+
         while double(norm(DY)) >= Tolit && iteration < maxIterations
-            DY = (I - h*g*jac)\(h*g*f(tn+c(i)*h,Y(:,i))-Y(:, i) + K(:,i));
+            DY = J\(h*g*f(tn+c(i)*h,Y(:,i))-Y(:, i) + K(:,i));
             Y(:,i) = Y(:, i) + DY;
             iteration = iteration + 1;
         end
+
     if double(norm(DY)) < Tolit && iteration < maxIterations
         % Testing whether DY is less than given tolerance
         % If true, set returned iflag to 1 and break out of loop
@@ -54,7 +60,7 @@ for i = 2:4
     end
 end
 
-le = Y(:, 4) - Y(:, 3);
+le = abs(Y(:, 4) - Y(:, 3));
 tnext = tn + h;
 ynext = Y(:, 4);
 

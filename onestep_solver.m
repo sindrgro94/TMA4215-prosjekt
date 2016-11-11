@@ -5,7 +5,7 @@
 
 %% Initializing constants and callings
 clear all
-N = 1000;
+N = 100;
 interval = 0;
 %jac = jacobi(parameter)
 t0 = 0;
@@ -35,7 +35,10 @@ iflag = 0;
 y = zeros(2,N);
 t = zeros(1,N);
 % Looping trough N steps for finding the solution
-for i = 1:length(N)
+tic
+for i = 1:N
+    tic
+    jac = double(jac(3,3,3));
     [tnext, ynext, le, iflag] = onestep(testFunctions{1}{1},...
         jac,tn,yn,h,...
         Tolit);
@@ -46,10 +49,14 @@ for i = 1:length(N)
         tnext = 0;
         ynext = yn;
     end
-    y(i) = ynext;
+    y(:,i) = ynext;
     t(i) = tnext;
     yn = ynext;
     tn = tnext;
 end
-
+toc
 %% Plotting section
+
+
+
+
