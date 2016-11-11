@@ -17,9 +17,9 @@ t = zeros(1,N);
 % Looping trough N steps for finding the solution
 tic
 eg = 0; %Error globaly
-for i = 1:N
+for i = 2:N
     tic
-    [tnext, ynext, le, iflag] = onestep(f,jac,t(i),y(:,i),h,Tolit);
+    [tnext, ynext, le, iflag] = onestep(f,jac,t(i-1),y(:,i-1),h,Tolit);
     toc
     try
         iflag = -1;
