@@ -1,4 +1,4 @@
-function [tnext, ynext, le, iflag] = onestep_1(f,jac,tn,yn,h,Tolit)
+function [tnext, ynext, le, iflag] = onestep(f,jac,tn,yn,h,Tolit)
 % [tnext, ynext, le, iflag] = onestep(f, jac, tn, yn, h, Tolit)
 % Do one step with an implicit RK?method method.
 
@@ -24,7 +24,7 @@ A = [0,0,0,0;...
     (-4*g^2+6*g-1)/(4*g), (-2*g+1)/(4*g), g, 0;...
     (6*g-1)/(12*g), -1/(12*g*(2*g-1)), (-6*g^2+6*g-1)/(3*(2*g-1)), g];
 m = length(yn);
-maxIterations = 3;
+maxIterations = 2;
 %% Newton iteration for finding stage values Y1, Y2, Y3, Y4
 % Initializing Y to length of Y_0 vector
 Y = zeros(m,4);
@@ -36,28 +36,39 @@ I = eye(size(jac));
 K = zeros(m,4);
 iteration = 0
 DY = Inf
-K(:,1) = Y(:,1)
-for i = 2:4
-    DY = Inf;
-    iteration = 0;
-    K(:,i) = Y(:,1);
-    for j = 1:i-1
-        K(:,i) = K(:,i) + h*A(i,j)*f(tn + c(j)*h, Y(:,j));
+for i = 1:4
+    for j = 1:(i - 1)
+        K(:,i) = Y(:,1) + h*(A(i,j)*f(tn + c(j)*h, Y(:,j)))
     end
-        while double(norm(DY)) >= Tolit && iteration < maxIterations
-            DY = (I - h*g*jac)^-1*(h*g*f(tn+c(i)*h,Y(:,i))-Y(:, i) + K(i))
-            Y(:,i) = Y(:, i) + DY
-            iteration = iteration + 1;
+    while double(norm(DY)) >= Tolit && iteration < maxIterations
+        %DY = inv(I - h*g*jac)*(-Y(:, j) - Y(:,i) + K(:, i))
+        DY = inv(I - h*g*jac)*(- Y(:,i) + K(:, i))
+        Y(:,i) = Y(:, i) + DY
+        iteration = iteration + 1;
+        if iteration == maxIterations
+            % Testing whether k has ran out of maxIterations
+            % If true, sets flag negative and returns to onestep function
+            iflag = -1;
+            tnext = NaN
+            ynext = NaN
+            le = NaN
+            return
         end
+        
+    end
     if double(norm(DY)) < Tolit && iteration < maxIterations
         % Testing whether DY is less than given tolerance
         % If true, set returned iflag to 1 and break out of loop
         iflag = 1
+        break
     end
-    if iteration == maxIterations
+    if i == maxIterations
         % Testing whether k has ran out of maxIterations
         % If true, sets flag negative and returns to onestep function
         iflag = -1;
+        tnext = NaN
+        ynext = NaN
+        le = NaN
         return
     end
 end
@@ -65,5 +76,22 @@ end
 le = Y(:, 4) - Y(:, 3)
 tnext = tn + h
 ynext = Y(:, 4)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 end
