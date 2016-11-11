@@ -15,8 +15,7 @@ function [tnext, ynext, le, iflag] = onestep(f,jac,tn,yn,h,Tolit)
 % = ?1: The iterations fails. t and y are not updated
 %% Setting constants
 
-[A, c, bHat, b, g, s] = method();
-
+[A, c, g, s, bHat, b] = method();
 m = length(yn);
 maxIterations = 3;
 %% Newton iteration for finding stage values Y1, Y2, Y3, Y4

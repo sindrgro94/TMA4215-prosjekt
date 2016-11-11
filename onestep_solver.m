@@ -5,7 +5,7 @@
 
 %% Initializing constants and callings
 clear all
-N = [1000];
+N = 1000;
 interval = 0;
 %jac = jacobi(parameter)
 t0 = 0;
