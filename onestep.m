@@ -37,10 +37,13 @@ K = zeros(m,4);
 iteration = 0
 DY = Inf
 for i = 1:4
-    for j = 1:3
-        K(:,i) = Y(:,1) + A(i,j)*f(tn + c(j)*h, Y(:,j))
+    for j = 1:4
+        K(:,i) = Y(:,1) + h*(A(i,j)*f(tn + c(j)*h, Y(:,j)))
         while double(norm(DY)) >= Tolit && iteration < maxIterations
-            DY = (I - h*g*jac)^-1*(-Y(:, j) + yn + h*K(i))
+            for k = 1:4
+                Y(:,i) = Y(:,1) + h*(A(i,j)*f(tn + c(j), Y(:, j)))
+            end
+            DY = (I - h*g*jac)^-1*(-Y(:, j) - Y(:,i) + h*K(i))
             Y(:,j) = Y(:, j) + DY
             iteration = iteration + 1;
         end
@@ -55,6 +58,9 @@ for i = 1:4
         % Testing whether k has ran out of maxIterations
         % If true, sets flag negative and returns to onestep function
         iflag = -1;
+        tn = NaN
+        tnext = Nan
+        le = Nan
         return
     end
 end
