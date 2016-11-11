@@ -28,7 +28,7 @@ y1 = 1;
 y2 = 2;
 y3 = 0;
 t = 0;
-jac = jacobian_real(testFunctions{1}{2}, y1, y2, 0, t);
+J = jacobian_real(testFunctions{1}{2}, y1, y2, 0, t);
 tn = testFunctions{1}{3};
 yn = testFunctions{1}{4};
 iflag = 0;
@@ -38,10 +38,11 @@ t = zeros(1,N);
 tic
 for i = 1:N
     tic
-    jac = double(jac(3,3,3));
+    jac = double(J(y(1,i),y(2,i),t(i)));
     [tnext, ynext, le, iflag] = onestep(testFunctions{1}{1},...
         jac,tn,yn,h,...
         Tolit);
+    toc
     try
         iflag = -1;
     catch
