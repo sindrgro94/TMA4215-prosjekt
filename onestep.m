@@ -27,8 +27,6 @@ Y(:,1) = yn';
 I = eye(size(jac));
 K = zeros(m,4);
 K(:,1) = Y(:,1);
-Ktest = zeros(m,4);
-Ktest(:,1) = Y(:,1);
 J = (I - h*g*jac);
 %% Calculating Yi
 for i = 2:4
@@ -37,11 +35,9 @@ for i = 2:4
 % Finding Ki
 
     K(:,i) = Y(:,1);
-    Ktest(:,i) = sum(h*A(i,1:i-1)*f(tn+c(1:i-1)*h,Y(:,1:i-1)))
     for j = 1:i-1
         K(:,i) = K(:,i) + h*A(i,j)*f(tn + c(j)*h, Y(:,j));
     end
-    disp(K)
 % Finding Yi nummericaly
 
         while double(norm(DY)) >= Tolit && iteration < maxIterations

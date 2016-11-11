@@ -1,3 +1,4 @@
+function onestep_solver(f,h,tn,yn,Tolit,testfunction)
 %% Introduction
 % This script answers task 8
 % For each iteration, calls onestep.m to solve one step of a test problem
@@ -5,13 +6,8 @@
 
 %% Initializing constants and callings
 clear all
-N = 100;
-interval = 0;
+N = ceil((tint(0)-tint(1))/h);
 %jac = jacobi(parameter)
-t0 = 0;
-tend = 1;
-h = (tend - t0) / N;
-Tolit = 0.5;
 
 %% Initializing test functions
 % All test problems are formatted {function, Jacobian string argument,
@@ -36,6 +32,7 @@ y = zeros(2,N);
 t = zeros(1,N);
 % Looping trough N steps for finding the solution
 tic
+eg = 0; %Error globaly
 for i = 1:N
     tic
     jac = double(J(y(1,i),y(2,i),t(i)));
@@ -54,9 +51,12 @@ for i = 1:N
     t(i) = tnext;
     yn = ynext;
     tn = tnext;
+    eg = eg +le;
 end
 toc
 %% Plotting section
+
+
 
 
 
