@@ -23,11 +23,11 @@ maxIterations = 3;
 % Initializing Y to length of Y_0 vector
 Y = zeros(m,4);
 % Y_1 = y_n
-Y(:,1) = yn';
+Y(:,1) = yn;
+jac = double(jac(yn(1),yn(2),tn));
 I = eye(size(jac));
 K = zeros(m,4);
 K(:,1) = Y(:,1);
-jac = double(jac(yn(1),yn(2),tn));
 J = (I - h*g*jac);
 %% Calculating Yi
 for i = 2:4
