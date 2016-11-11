@@ -37,16 +37,24 @@ K = zeros(m,4);
 iteration = 0
 DY = Inf
 for i = 1:4
-    for j = 1:4
+    for j = 1:(i - 1)
         K(:,i) = Y(:,1) + h*(A(i,j)*f(tn + c(j)*h, Y(:,j)))
-        while double(norm(DY)) >= Tolit && iteration < maxIterations
-            for k = 1:4
-                Y(:,i) = Y(:,1) + h*(A(i,j)*f(tn + c(j), Y(:, j)))
-            end
-            DY = (I - h*g*jac)^-1*(-Y(:, j) - Y(:,i) + h*K(i))
-            Y(:,j) = Y(:, j) + DY
-            iteration = iteration + 1;
+    end
+    while double(norm(DY)) >= Tolit && iteration < maxIterations
+        %DY = inv(I - h*g*jac)*(-Y(:, j) - Y(:,i) + K(:, i))
+        DY = inv(I - h*g*jac)*(- Y(:,i) + K(:, i))
+        Y(:,i) = Y(:, i) + DY
+        iteration = iteration + 1;
+        if iteration == maxIterations
+            % Testing whether k has ran out of maxIterations
+            % If true, sets flag negative and returns to onestep function
+            iflag = -1;
+            tnext = NaN
+            ynext = NaN
+            le = NaN
+            return
         end
+        
     end
     if double(norm(DY)) < Tolit && iteration < maxIterations
         % Testing whether DY is less than given tolerance
@@ -58,9 +66,9 @@ for i = 1:4
         % Testing whether k has ran out of maxIterations
         % If true, sets flag negative and returns to onestep function
         iflag = -1;
-        tn = NaN
-        tnext = Nan
-        le = Nan
+        tnext = NaN
+        ynext = NaN
+        le = NaN
         return
     end
 end
