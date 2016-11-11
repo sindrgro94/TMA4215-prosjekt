@@ -27,6 +27,7 @@ Y(:,1) = yn';
 I = eye(size(jac));
 K = zeros(m,4);
 K(:,1) = Y(:,1);
+jac = double(jac(yn(1),yn(2),tn));
 J = (I - h*g*jac);
 %% Calculating Yi
 for i = 2:4

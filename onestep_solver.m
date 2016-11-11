@@ -35,7 +35,6 @@ tic
 eg = 0; %Error globaly
 for i = 1:N
     tic
-    jac = double(J(y(1,i),y(2,i),t(i)));
     [tnext, ynext, le, iflag] = onestep(testFunctions{1}{1},...
         jac,tn,yn,h,...
         Tolit);
