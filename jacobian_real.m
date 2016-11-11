@@ -1,4 +1,4 @@
-function jac = jacobian_real(name, a1, a2, a3, time)
+function jac = jacobian_real(name)
 syms y1
 syms y2
 syms y3
@@ -10,7 +10,7 @@ f1(y1,y2,t) = -2*y1+y2+t;
 f2(y1,y2,t) = y1-2*y2+t+3;
 J = [diff(f1,y1),diff(f1,y2);...
      diff(f2,y1),diff(f2,y2)];
- jac = J%(a1, a2, time)
+ jac = J;%(a1, a2, time)
 elseif strcmp(name,'van der pol')
 %Jacobi Van der Pol equation
 mu = 5;

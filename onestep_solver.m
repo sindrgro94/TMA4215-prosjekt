@@ -13,8 +13,8 @@ N = ceil((tint(0)-tint(1))/h);
 % All test problems are formatted {function, Jacobian string argument,
 % current time step value, current solution value, stepsize and 
 
-linearTestProblem = {@(t,y) [t - 2*y(1) + y(2) ; t + y(1)- 2*y(2) + 3], ...
-    'test', 0, [1 ; 2]};
+linearTestProblem = {f, ...
+    testfunction, tint(0), yn};
 
 testFunctions = {linearTestProblem};
 
@@ -24,7 +24,7 @@ y1 = 1;
 y2 = 2;
 y3 = 0;
 t = 0;
-J = jacobian_real(testFunctions{1}{2}, y1, y2, 0, t);
+J = jacobian_real(testFunctions{1}{2}, y(1), y(2), y(3), tint(1));
 tn = testFunctions{1}{3};
 yn = testFunctions{1}{4};
 iflag = 0;
