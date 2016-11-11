@@ -60,7 +60,7 @@ for i = 2:4
     end
 end
 
-le = abs(Y(:, 4) - Y(:, 3));
+le = norm(Y(:, 4) - Y(:, 3));
 tnext = tn + h;
 ynext = Y(:, 4);
 

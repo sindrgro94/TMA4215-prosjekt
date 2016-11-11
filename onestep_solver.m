@@ -1,4 +1,4 @@
-function onestep_solver(f,h,tint,yn,Tolit,testfunction)
+function [eg,y,t] = onestep_solver(f,h,tint,yn,Tolit,testfunction)
 %% Introduction
 % This script answers task 8
 % For each iteration, calls onestep.m to solve one step of a test problem

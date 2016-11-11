@@ -11,7 +11,26 @@ f = {@(t,y) [t - 2*y(1) + y(2) ; t + y(1)- 2*y(2) + 3],...
              3*10^7*y(2)^2]};
 
 Tolit = 0.5;
-onestep_solver(f{1},h,tint,yn,Tolit,TestProblems(1))
+h = [0];
+eg = [0];
+cnt = 1;
+for i = 1:0.5:2
+    [eg(cnt),y,t] = onestep_solver(f{1},10^-i,tint,yn,Tolit,TestProblems(1));
+    h(cnt) = 10^-i;
+    cnt = cnt+1;
+end
+figure()
+plot(t,y)
+title(TestProblems(1))
+ylim([0,3])
+figure
+hold on
+loglog(h,eg)
+loglog(h,h.^2)
+title('Global feil som funskjon av h')
+legend('Nummerisk feil','Stigningstall 2')
+    
+
 
 
 
