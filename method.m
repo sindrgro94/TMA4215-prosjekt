@@ -1,5 +1,5 @@
 % oppgave 6
-function [A, c, bHat, b, g, s] = method()
+function [A, c, g, s, bHat, b] = method()
 g = 0.435866762;%gamma
 A = [0,0,0,0;...
     g,g,0,0;...
