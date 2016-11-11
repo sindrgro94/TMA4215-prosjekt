@@ -11,7 +11,7 @@ interval = 0;
 t0 = 0;
 tend = 1;
 h = (tend - t0) / N;
-Tolit = 1;
+Tolit = 0.5;
 
 %% Initializing test functions
 % All test problems are formatted {function, Jacobian string argument,
@@ -24,18 +24,18 @@ testFunctions = {linearTestProblem};
 
 %% Calling onestep function
 % First establishing initial values
-jac = jacobi(testFunctions{1}{2});
-tn = testFunctions{1}{3};
-yn = testFunctions{1}{4};
 y1 = 1;
 y2 = 2;
+y3 = 0;
 t = 0;
-result = subs(jac)
+jac = jacobian_real(testFunctions{1}{2}, y1, y2, 0, t);
+tn = testFunctions{1}{3};
+yn = testFunctions{1}{4};
 iflag = 0;
 % Looping trough N steps for finding the solution
 for i = 1:length(N)
-    [tnext, ynext, le, iflag] = onestep(@(t,y) [t - 2*y(1) + y(2) ; t + y(1)- 2*y(2) + 3]...
-        ,jac,tn,yn,h,...
+    [tnext, ynext, le, iflag] = onestep(testFunctions{1}{1},...
+        jac,tn,yn,h,...
         Tolit);
     try
         iflag = -1;

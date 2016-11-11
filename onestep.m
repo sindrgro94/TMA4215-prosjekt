@@ -24,7 +24,7 @@ A = [0,0,0,0;...
     (-4*g^2+6*g-1)/(4*g), (-2*g+1)/(4*g), g, 0;...
     (6*g-1)/(12*g), -1/(12*g*(2*g-1)), (-6*g^2+6*g-1)/(3*(2*g-1)), g];
 m = length(yn);
-maxIterations = 2
+maxIterations = 2;
 %% Newton iteration for finding stage values Y1, Y2, Y3, Y4
 % Initializing Y to length of Y_0 vector
 Y = zeros(m,4);
@@ -35,18 +35,17 @@ I = eye(size(jac));
 %Y(:,2) = Y(:,1);
 K = zeros(m,4);
 iteration = 0
-DY = Inf;
-
+DY = Inf
 for i = 1:4
     for j = 1:3
-        K(:,i) = Y(:,1) + A(i,j)*f(tn + c(j)*h, Y(:,j));
-        while abs(DY) >= Tolit && iteration < maxIterations
-            DY = (I - h*g*jac)^-1*(-Y(:, j) + yn + h*K(i));
+        K(:,i) = Y(:,1) + A(i,j)*f(tn + c(j)*h, Y(:,j))
+        while double(norm(DY)) >= Tolit && iteration < maxIterations
+            DY = (I - h*g*jac)^-1*(-Y(:, j) + yn + h*K(i))
             Y(:,j) = Y(:, j) + DY
             iteration = iteration + 1;
         end
     end
-    if abs(DY) < Tolit && iteration < maxIterations
+    if double(norm(DY)) < Tolit && iteration < maxIterations
         % Testing whether DY is less than given tolerance
         % If true, set returned iflag to 1 and break out of loop
         iflag = 1
