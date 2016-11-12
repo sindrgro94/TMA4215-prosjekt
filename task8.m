@@ -19,16 +19,18 @@ for i = 1:0.5:2
     h(cnt) = 10^-i;
     cnt = cnt+1;
 end
+
+
+loglog(h,eg)
+hold on
+loglog(h,h.^2)
+title('Global feil som funskjon av h')
+legend('Nummerisk feil','Stigningstall 2')
+
 figure()
 plot(t,y)
 title(TestProblems(1))
 ylim([0,3])
-figure
-hold on
-loglog(h,eg)
-loglog(h,h.^2)
-title('Global feil som funskjon av h')
-legend('Nummerisk feil','Stigningstall 2')
     
 
 
