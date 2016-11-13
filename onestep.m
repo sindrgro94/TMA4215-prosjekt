@@ -15,16 +15,16 @@ function [tnext, ynext, le, iflag] = onestep(f,jac,tn,yn,h,Tolit)
 % = ?1: The iterations fails. t and y are not updated
 %% Setting constants
 
-[A, c, g, s, bHat, b] = method();
+[A, c, g] = method();
 m = length(yn);
-maxIterations = 3;
+maxIterations = 50;
 
 %% Newton iteration for finding stage values Y1, Y2, Y3, Y4
 % Initializing Y to length of Y_0 vector
 Y = zeros(m,4);
 % Y_1 = y_n
 Y(:,1) = yn;
-jac = double(jac(yn(1),yn(2),tn));
+%jac = double(jac(yn(1),yn(2),tn));
 I = eye(size(jac));
 K = zeros(m,4);
 K(:,1) = Y(:,1);
@@ -34,9 +34,9 @@ for i = 2:4
     DY = Inf;
     iteration = 0;
 % Finding Ki
-
+    Y(:,i) = Y(:,i-1); %dette er for å minske iterasjonene i whileløkken
     K(:,i) = Y(:,1);
-    for j = 1:i-1
+    for j = 1:(i-1)
         K(:,i) = K(:,i) + h*A(i,j)*f(tn + c(j)*h, Y(:,j));
     end
 % Finding Yi nummericaly
