@@ -1,4 +1,4 @@
-function x = finding_gamma()
+function [x, R, Rh] = task_2_to_4()
 
 %% Establishes the butcher tableu 
 g = sym('g','real'); %gamma
@@ -49,6 +49,11 @@ while abs(differ) > (10^4)*eps
     x = x_np;
 end
 x = double(x);
+gamma = x;
+
+%% Solving for R and R^
+%R1(z) = subs(R(z,g), g, gamma);
+%R1_hat(z) = subs(Rh(z, g), g, gamma);
 %% R_hat solution
 y = solve(R_infh,g);
 y_ret = y(1);
