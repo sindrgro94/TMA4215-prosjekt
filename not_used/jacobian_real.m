@@ -14,7 +14,7 @@ elseif strcmp(name,'Van der Pol equation')
 %Jacobi Van der Pol equation
 mu = 5;
 x1(y1,y2,t) = y2;
-x2(y1,y2,t) = mu*(1-y1^2)-y1;
+x2(y1,y2,t,mu) = mu*(1-y1^2)-y1;
 JvP = [diff(x1,y1),diff(x1,y2);...
        diff(x2,y1),diff(x2,y2)];
    jac = JvP;
