@@ -1,5 +1,6 @@
 % Task 9
 clear all;
+close all;
 clc;
 TestProblems = {'Linear test problem','Van der Pol equation','The Robertson reaction'};
 mu = 10; %can be chosen
@@ -24,18 +25,24 @@ for i = 1:3
         hold on
         title(TestProblems{i});
         k = size(y);
-        for j = 1:k(1)
-        plot(t(1:stop),y(j,1:stop));
+        if i==2
+           plot(t(1:stop),y(1,1:stop)); 
+        else
+            for j = 1:k(1)
+            plot(t(1:stop),y(j,1:stop));
+            end
         end
-        if k(1) == 2
+        if i == 1
             legend('y1','y2')
-        elseif k(1) == 2
+        elseif i == 2
+            legend('y1')
+        elseif i == 3
             legend('y1','y2','y3')
         end
         xlabel('t')
         subplot(2,1,2)
         hold on
-        plot(t(1:stop-1),(t(2:stop)-t(1:stop-1)),'*'); 
+        plot(t(1:stop-1),(t(2:stop)-t(1:stop-1)),'.'); 
         xlabel('t')
         ylabel('Stepsize')
     else

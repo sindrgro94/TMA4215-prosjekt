@@ -1,4 +1,4 @@
-function [tnext, ynext, le, iflag] = onestep(f,jac,tn,yn,h,Tolit,mu)
+function [tnext, ynext, le, iflag, nfun, njac] = onestep(f,jac,tn,yn,h,Tolit,mu)
 % [tnext, ynext, le, iflag] = onestep(f, jac, tn, yn, h, Tolit)
 % Do one step with an implicit RK?method method.
 
@@ -23,6 +23,8 @@ tnext = 0;
 ynext = 0;
 le = 0;
 iflag = -1;
+nfun = 0;
+njac = 0;
 %% Newton iteration for finding stage values Y1, Y2, Y3, Y4
 % Initializing Y to length of Y_0 vector
 Y = zeros(m,4);

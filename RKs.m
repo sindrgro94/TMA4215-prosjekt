@@ -14,7 +14,6 @@ function [t, y, iflag, nfun, njac] = RKs(f, jac, t0, tend, y0, Tol, h0, mu)
     while t(step)<tend
         [tnext, ynext, le, iflag] = onestep(f,jac,t(step),y(:,step),h,newtonTol,mu);
         %[tnext, ynext, le, iflag] = onestep_old(f,jac,t(step),y(:,step),h,newtonTol);
-
         if iflag == 1 && le<Tol
             t(step+1) = tnext;
             y(:,step+1) = ynext;
