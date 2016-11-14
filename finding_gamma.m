@@ -16,14 +16,14 @@ A = [0,0,0,0;...
 %     0,  0, 1, 0];
 % b = [1/6,1/3,1/3,1/6];
 % c = [0,1/2,1/2,1];
-%% finding ki for test problem
+%% finding k_i for test problem
 yn = sym('yn');
 l = sym('l');
 h = sym('h');
 z = sym('z');
 %k1 = sym('k1'); k2 = sym('k2'); k3 = sym('k3'); k4 = sym('k4');
 k1 = l*yn;
-%k2 = l*(yn+h*g*k1+h*g*k2); løser denne for k2
+%k2 = l*(yn+h*g*k1+h*g*k2); lï¿½ser denne for k2
 k2 = l*yn*(1+h*A(2,1)*l)/(1-h*A(2,2)*l);
 k3 = l*(yn+h*(A(3,1)*k1+A(3,2)*k2))/(1-h*l*A(3,3));
 k4 = l*(yn+h*(A(4,1)*k1+A(4,2)*k2+A(4,3)*k3))/(1-h*l*A(4,4));
@@ -32,11 +32,14 @@ yn_1= simplify(yn+h*(b(1)*k1+b(2)*k2+b(3)*k3+b(4)*k4));
 yn_1h = simplify(yn+h*(bHat(1)*k1+bHat(2)*k2+bHat(3)*k3+bHat(4)*k4));
 yn_1 = subs(yn_1, l*h, z);
 yn_1h = subs(yn_1h,l*h,z);
+%% Answering task 2, finding R(z) and R^(z)
 R(z,g) = yn_1/yn;
 Rh(z,g) = yn_1h/yn;
+%% Answering task 3, finding R(Inf) and R^(Inf)
 R_inf(g) = limit(R(z,g),inf);
 R_infh(g) = limit(Rh(z,g),inf);
-%% Newtons method
+%% Answering task 4, finding gamma near 0.4
+% Using Newtons method
 x = 0.4;
 differ = 0.4;
 dR_inf = diff(R_inf,g);
