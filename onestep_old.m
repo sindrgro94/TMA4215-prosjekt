@@ -1,4 +1,4 @@
-function [tnext, ynext, le, iflag] = onestep(f,jac,tn,yn,h,Tolit,mu)
+function [tnext, ynext, le, iflag] = onestep_old(f,jac,tn,yn,h,Tolit)
 % [tnext, ynext, le, iflag] = onestep(f, jac, tn, yn, h, Tolit)
 % Do one step with an implicit RK?method method.
 
@@ -15,33 +15,28 @@ function [tnext, ynext, le, iflag] = onestep(f,jac,tn,yn,h,Tolit,mu)
 % = ?1: The iterations fails. t and y are not updated
 %% Setting constants
 
-[A, c, g] = method();
+[A, c, g, s, bHat, b] = method();
 m = length(yn);
-maxIterations = 50;
-%% To avoid errors:
-tnext = 0;
-ynext = 0;
-le = 0;
-iflag = -1;
+maxIterations = 3;
+
 %% Newton iteration for finding stage values Y1, Y2, Y3, Y4
 % Initializing Y to length of Y_0 vector
 Y = zeros(m,4);
 % Y_1 = y_n
 Y(:,1) = yn;
 %jac = double(jac(yn(1),yn(2),tn));
-thisJac = jac(yn,tn,mu);
-I = eye(size(thisJac));
+I = eye(size(jac));
 K = zeros(m,4);
 K(:,1) = Y(:,1);
-J = (I - h*g*thisJac);
+J = (I - h*g*jac(1,1,1));
 %% Calculating Yi
 for i = 2:4
     DY = Inf;
     iteration = 0;
 % Finding Ki
-    Y(:,i) = Y(:,i-1); %dette er for ? minske iterasjonene i whilel?kken
+
     K(:,i) = Y(:,1);
-    for j = 1:(i-1)
+    for j = 1:i-1
         K(:,i) = K(:,i) + h*A(i,j)*f(tn + c(j)*h, Y(:,j));
     end
 % Finding Yi nummericaly

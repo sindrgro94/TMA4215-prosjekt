@@ -15,10 +15,11 @@ tInt = {[0 1],[0 mu],[0 40]};
 y0 = {[1;2],[2;0],[1,0,0]};
 Tol = {10^(-8), 10^(-8), 10^(-8)}; %can be chosen
 h0 = 0.1; %can be chosen
-for i = 1:1
+for i = 1:3
     [t, y, iflag, nfun, njac] = RKs(f{i}, jac{i}, tInt{i}(1), tInt{i}(2), y0{i}, Tol{i}, h0, mu);
     if iflag == 1 %...we make plots:
         stop = find(t == tInt{i}(2));
+        figure
         subplot(2,1,1)
         hold on
         title(TestProblems{i});
