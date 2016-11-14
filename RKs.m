@@ -10,9 +10,8 @@ function [t, y, iflag, nfun, njac] = RKs(f, jac, t0, tend, y0, Tol, h0)
     step = 1;
     newtonTol = 0.1*Tol;
     P = 0.8; %pessimist factor
-    stepTol = 10^(-10); %no idea what this should be.
+    stepTol = 10^(-15); %no idea what this should be.
     while t(step)<tend
-        wait = waitbar(t(step)/tend,'RKs is running');
         [tnext, ynext, le, iflag] = onestep(f,jac,t(step),y(:,step),h,newtonTol);
         if iflag == 1 && le<Tol
             t(step+1) = tnext;

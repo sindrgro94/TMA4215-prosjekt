@@ -16,18 +16,28 @@ tInt = {[0 1],[0 mu],[0 40]};
 y0 = {[1;2],[2;0],[1,0,0]};
 Tol = {10^(-8), 10^(-8), 10^(-8)}; %can be chosen
 h0 = 0.1; %can be chosen
-for i = 1:1
+for i = 2:2
     [t, y, iflag, nfun, njac] = RKs(f{i}, jac{i}, tInt{i}(1), tInt{i}(2), y0{i}, Tol{i}, h0);
     if iflag == 1 %...we make plots:
         stop = find(t == tInt{i}(2));
         subplot(2,1,1)
-        title(TestProblems{i});
         hold on
-        plot(t(1:stop),y(1,1:stop));
-        plot(t(1:stop),y(2,1:stop));
+        title(TestProblems{i});
+        k = size(y);
+        for j = 1:k(1)
+        plot(t(1:stop),y(j,1:stop));
+        end
+        if k(1) == 2
+            legend('y1','y2')
+        elseif k(1) == 2
+            legend('y1','y2','y3')
+        end
+        xlabel('t')
         subplot(2,1,2)
         hold on
-        plot(t(1:stop-1),(t(2:stop)-t(1:stop-1))); 
+        plot(t(1:stop-1),(t(2:stop)-t(1:stop-1)),'*'); 
+        xlabel('t')
+        ylabel('Stepsize')
     else
         fprintf(TestProblems{i});
         fprintf(' went wrong.\n');

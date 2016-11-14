@@ -24,7 +24,22 @@ maxIterations = 50;
 Y = zeros(m,4);
 % Y_1 = y_n
 Y(:,1) = yn;
+<<<<<<< HEAD
+%finding out what input the jacobian should get:
+numVariables = length(symvar(jac));
+if numVariables == 0
+    jac = double(jac(yn(1),yn(2),tn));
+elseif numVariables == 1
+    jac = double(jac(yn(1),yn(2)));
+elseif numVariables == 2 %this is not ok. Check jac{1,2 and 3}
+    jac = double(jac(yn(1),yn(2),tn));
+else
+    fprintf('Something is wrong with the jacobian\n');
+    return
+end
+=======
 %jac = double(jac(yn(1),yn(2),tn));
+>>>>>>> origin/master
 I = eye(size(jac));
 K = zeros(m,4);
 K(:,1) = Y(:,1);
@@ -55,6 +70,9 @@ for i = 2:4
     if iteration == maxIterations
         % Testing whether k has ran out of maxIterations
         % If true, sets flag negative and returns to onestep function
+        tnext = 0;%to avoid errors
+        ynext = 0;%to avoid errors
+        le = 0;%to avoid errors
         iflag = -1;
         return
     end
