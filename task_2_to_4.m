@@ -1,4 +1,4 @@
-function [x, R, Rh] = task_2_to_4()
+function [x, stab, stabHat] = task_2_to_4()
 
 %% Establishes the butcher tableu 
 g = sym('g','real'); %gamma
@@ -52,8 +52,8 @@ x = double(x);
 gamma = x;
 
 %% Solving for R and R^
-%R1(z) = subs(R(z,g), g, gamma);
-%R1_hat(z) = subs(Rh(z, g), g, gamma);
+stab(z) = simplify(subs(R(z,g), g, gamma));
+stabHat(z) = subs(Rh(z, g), g, gamma);
 %% R_hat solution
 y = solve(R_infh,g);
 y_ret = y(1);

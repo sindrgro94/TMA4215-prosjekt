@@ -32,9 +32,10 @@ fprintf('Error estimating method is of order 2 for "gamma" != 1/2 +- 1/(2*sqrt(3
 fprintf('\n\n');
 fprintf('(sum(b_i*a_ij*c_j) = 1/6):\n');
 fprintf(' - b    => %s\n',simplify(sum(b'*A*c)));
+fprintf(' - bHat    => %s\n',simplify(sum(bHat'*A*c)));
 
 fprintf('\n\n')
 fprintf('test order 4:\n\n')
 fprintf('(sum(b_i*c_i^3) = 1/4):\n')
 fprintf(' - b    => %s\n',simplify(sum(b.*c.^3)));
-fprintf('Advancing method is of order 3 for "gamma" != 1/4.\n')
+fprintf('Advancing method is of order 4 for "gamma" != 1/4.\n')
