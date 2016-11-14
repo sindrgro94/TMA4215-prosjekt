@@ -1,4 +1,4 @@
-function [t, y, iflag, nfun, njac] = RKs(f, jac, t0, tend, y0, Tol, h0)
+function [t, y, iflag, nfun, njac] = RKs(f, jac, t0, tend, y0, Tol, h0, mu)
     nfun = 0;
     njac = 0;
     steps = (tend-t0)/h0*5; %estimation of steps
@@ -12,7 +12,7 @@ function [t, y, iflag, nfun, njac] = RKs(f, jac, t0, tend, y0, Tol, h0)
     P = 0.8; %pessimist factor
     stepTol = 10^(-15); %no idea what this should be.
     while t(step)<tend
-        [tnext, ynext, le, iflag] = onestep(f,jac,t(step),y(:,step),h,newtonTol);
+        [tnext, ynext, le, iflag] = onestep(f,jac,t(step),y(:,step),h,newtonTol,mu);
         if iflag == 1 && le<Tol
             t(step+1) = tnext;
             y(:,step+1) = ynext;

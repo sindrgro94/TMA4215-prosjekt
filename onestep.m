@@ -1,4 +1,4 @@
-function [tnext, ynext, le, iflag] = onestep(f,jac,tn,yn,h,Tolit)
+function [tnext, ynext, le, iflag] = onestep(f,jac,tn,yn,h,Tolit,mu)
 % [tnext, ynext, le, iflag] = onestep(f, jac, tn, yn, h, Tolit)
 % Do one step with an implicit RK?method method.
 
@@ -24,32 +24,17 @@ maxIterations = 50;
 Y = zeros(m,4);
 % Y_1 = y_n
 Y(:,1) = yn;
-<<<<<<< HEAD
-%finding out what input the jacobian should get:
-numVariables = length(symvar(jac));
-if numVariables == 0
-    jac = double(jac(yn(1),yn(2),tn));
-elseif numVariables == 1
-    jac = double(jac(yn(1),yn(2)));
-elseif numVariables == 2 %this is not ok. Check jac{1,2 and 3}
-    jac = double(jac(yn(1),yn(2),tn));
-else
-    fprintf('Something is wrong with the jacobian\n');
-    return
-end
-=======
 %jac = double(jac(yn(1),yn(2),tn));
->>>>>>> origin/master
 I = eye(size(jac));
 K = zeros(m,4);
 K(:,1) = Y(:,1);
-J = (I - h*g*jac);
+J = (I - h*g*jac(yn,tn,mu));
 %% Calculating Yi
 for i = 2:4
     DY = Inf;
     iteration = 0;
 % Finding Ki
-    Y(:,i) = Y(:,i-1); %dette er for å minske iterasjonene i whileløkken
+    Y(:,i) = Y(:,i-1); %dette er for ? minske iterasjonene i whilel?kken
     K(:,i) = Y(:,1);
     for j = 1:(i-1)
         K(:,i) = K(:,i) + h*A(i,j)*f(tn + c(j)*h, Y(:,j));
