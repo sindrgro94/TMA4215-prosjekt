@@ -12,7 +12,9 @@ function [t, y, iflag, nfun, njac] = RKs(f, jac, t0, tend, y0, Tol, h0, mu)
     P = 0.8; %pessimist factor
     stepTol = 10^(-15); %no idea what this should be.
     while t(step)<tend
-        [tnext, ynext, le, iflag] = onestep(f,jac,t(step),y(:,step),h,newtonTol,mu);
+        [tnext, ynext, le, iflag, funEv, jacEv] = onestep(f,jac,t(step),y(:,step),h,newtonTol,mu);
+        nfun = nfun + funEv;
+        njac = njac + jacEv;
         %[tnext, ynext, le, iflag] = onestep_old(f,jac,t(step),y(:,step),h,newtonTol);
         if iflag == 1 && le<Tol
             t(step+1) = tnext;

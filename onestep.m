@@ -24,7 +24,7 @@ ynext = 0;
 le = 0;
 iflag = -1;
 nfun = 0;
-njac = 0;
+njac = 1;%only one jacobian evaluation in this function
 %% Newton iteration for finding stage values Y1, Y2, Y3, Y4
 % Initializing Y to length of Y_0 vector
 Y = zeros(m,4);
@@ -41,15 +41,17 @@ for i = 2:4
     DY = Inf;
     iteration = 0;
 % Finding Ki
-    Y(:,i) = Y(:,i-1); %dette er for ? minske iterasjonene i whilel?kken
+    Y(:,i) = Y(:,i-1); %to minimize iterations in while loop
     K(:,i) = Y(:,1);
     for j = 1:(i-1)
         K(:,i) = K(:,i) + h*A(i,j)*f(tn + c(j)*h, Y(:,j));
+        nfun = nfun+1;
     end
 % Finding Yi nummericaly
 
         while double(norm(DY)) >= Tolit && iteration < maxIterations
             DY = J\(h*g*f(tn+c(i)*h,Y(:,i))-Y(:, i) + K(:,i));
+            nfun = nfun+1;
             Y(:,i) = Y(:, i) + DY;
             iteration = iteration + 1;
         end

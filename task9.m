@@ -20,9 +20,13 @@ for i = 1:3
     [t, y, iflag, nfun, njac] = RKs(f{i}, jac{i}, tInt{i}(1), tInt{i}(2), y0{i}, Tol{i}, h0, mu);
     if iflag == 1 %...we make plots:
         stop = find(t == tInt{i}(2));
-        figure
+        fprintf('%s:\n',TestProblems{i})
+        fprintf('Function evaluations: %d\n',nfun)
+        fprintf('Jacobian evaluations: %d\n\n',njac)
+        fig = figure;
         subplot(2,1,1)
         hold on
+        set(gca,'fontsize',15)
         title(TestProblems{i});
         k = size(y);
         if i==2
@@ -45,6 +49,8 @@ for i = 1:3
         plot(t(1:stop-1),(t(2:stop)-t(1:stop-1)),'.'); 
         xlabel('t')
         ylabel('Stepsize')
+        set(gca,'fontsize',15)
+        saveTightFigure(fig,TestProblems{i})
     else
         fprintf(TestProblems{i});
         fprintf(' went wrong.\n');
