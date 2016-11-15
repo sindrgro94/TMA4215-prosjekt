@@ -1,4 +1,4 @@
-function [tnext, ynext, le, iflag, nfun, njac] = onestep(f,jac,tn,yn,h,Tolit,mu)
+function [tnext, ynext, le, iflag, nfun, njac] = onestep(f,jac,tn,yn,h,Tolit)
 % [tnext, ynext, le, iflag] = onestep(f, jac, tn, yn, h, Tolit)
 % Do one step with an implicit RK?method method.
 
@@ -31,7 +31,7 @@ Y = zeros(m,4);
 % Y_1 = y_n
 Y(:,1) = yn;
 %jac = double(jac(yn(1),yn(2),tn));
-thisJac = jac(yn,tn,mu);
+thisJac = jac(yn,tn);
 I = eye(size(thisJac));
 K = zeros(m,4);
 K(:,1) = Y(:,1);

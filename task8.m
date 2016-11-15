@@ -1,17 +1,17 @@
 function task8()
 %% Beskrivelse av problemer
 % Jeg har jobbet litt med dette scriptet i kveld 13.11.16. Jeg er ganske
-% sikker på at vi kan effektivisere det en del ved å endre måten vi finner
-% jacobien på. Er mulighens best om vi lagerer den på en annen måte slik
-% Sindre snakket om, eller om vi faktisk kan approksimere den slik det står i boken
-% side 286. Tror kanskje sistnevnte blir litt for unøyaktig... Jeg la til
+% sikker p? at vi kan effektivisere det en del ved ? endre m?ten vi finner
+% jacobien p?. Er mulighens best om vi lagerer den p? en annen m?te slik
+% Sindre snakket om, eller om vi faktisk kan approksimere den slik det st?r i boken
+% side 286. Tror kanskje sistnevnte blir litt for un?yaktig... Jeg la til
 % en linje (37) i onestep.m, grunnen er kommentert ved siden av.
 % Totaltsett, med symbolsk jacobi bruker vi ca 0.01 sek per nye y-verdi, for symbolsk jacobi, som
 % egt er ganske mye. Med en jacobi funksjon som i linje 9-21 i
-% onestep_solver.m bruker den rundt 0.00007 sek per iterasjon. Så jeg
+% onestep_solver.m bruker den rundt 0.00007 sek per iterasjon. S? jeg
 % stemmer egt for den jeg da.
 
-% Problemene nå er at den ikke fungerer generelt for funksjonene våre, men jeg tror kunne noen små justeringer
+% Problemene n? er at den ikke fungerer generelt for funksjonene v?re, men jeg tror kunne noen sm? justeringer
 % kan fikse det
 
 %% 
@@ -42,7 +42,7 @@ tint = [0,mu];
 yn = [2;0];
 for i = 2:0.5:5
     tic
-    [eg(2,cnt),y,t] = onestep_solver(f{2},10^-i,tint,yn,Tolit,TestProblems(2));
+    [eg(2,cnt),y,t] = onestep_solver(f{2},10^-i,tint,yn,Tolit,TestProblems(2),mu);
     h(2,cnt) = 10^-i;
     cnt = cnt+1;
     toc

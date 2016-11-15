@@ -10,14 +10,14 @@ f = {@(t,y) [t - 2*y(1) + y(2) ; t + y(1)- 2*y(2) + 3],...
              0.04*y(1)-10^4*y(2)*y(3)-3*10^7*y(2)^2;...
              3*10^7*y(2)^2]};
 for i = 1:3
-    jac{i} = jacobi(TestProblems{i});
+    jac{i} = jacobi(TestProblems{i},mu);
 end
 tInt = {[0 1],[0 mu],[0 40]};
 y0 = {[1;2],[2;0],[1,0,0]};
 Tol = {10^(-8), 10^(-8), 10^(-8)}; %can be chosen
 h0 = 0.1; %can be chosen
 for i = 1:3
-    [t, y, iflag, nfun, njac] = RKs(f{i}, jac{i}, tInt{i}(1), tInt{i}(2), y0{i}, Tol{i}, h0, mu);
+    [t, y, iflag, nfun, njac] = RKs(f{i}, jac{i}, tInt{i}(1), tInt{i}(2), y0{i}, Tol{i}, h0);
     if iflag == 1 %...we make plots:
         stop = find(t == tInt{i}(2));
         fprintf('%s:\n',TestProblems{i})
@@ -50,7 +50,7 @@ for i = 1:3
         xlabel('t')
         ylabel('Stepsize')
         set(gca,'fontsize',15)
-        saveTightFigure(fig,TestProblems{i})
+        %saveTightFigure(fig,TestProblems{i})
     else
         fprintf(TestProblems{i});
         fprintf(' went wrong.\n');

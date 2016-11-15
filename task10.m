@@ -4,7 +4,7 @@ clear all
 clc
 mu = 10;
 f = @(t,y) [y(2); mu*(1-y(1)^2)*y(2)-y(1)];
-jac = jacobi('Van der Pol equation');
+jac = jacobi('Van der Pol equation',mu);
 tInt = [0 mu];
 y0 = [2;0];
 m = 2; %from y
@@ -19,7 +19,7 @@ matlabWork15s= zeros(1,10);
 matlabError23s = zeros(1,10);
 matlabWork23s= zeros(1,10);
 for tol = 1:10
-    [t, y, iflag, nfun, njac] = RKs(f, jac, tInt(1), tInt(2), y0, 10^(-tol), h0, mu);
+    [t, y, iflag, nfun, njac] = RKs(f, jac, tInt(1), tInt(2), y0, 10^(-tol), h0);
     stop = find(t==tInt(2));
     ourWork(tol) = nfun+m*njac;
     ourError(tol) = norm(errorEstimator-y(:,stop));
