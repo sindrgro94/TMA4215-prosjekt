@@ -23,7 +23,7 @@ jac = jacobi(testfunction{1},mu); %Her vil du f? riktig jacobi, men det er
 % end
 %% Calling one step function
 iflag = 0;
-y = zeros(2,N);
+y = zeros(length(yn),N);
 y(:,1) = yn;
 t = zeros(1,N);
 tn = t(1);
@@ -31,7 +31,7 @@ tn = t(1);
 eg = 0; %Error globaly
 for i = 2:N
     %J = double(jac(yn(1),yn(2),tn)); % Slik at vi sender inn en matrise av doubles
-    [tnext, ynext, le, iflag] = onestep(f,jac(yn(1)),t(i-1),y(:,i-1),h,Tolit);
+    [tnext, ynext, le, iflag] = onestep(f,jac,t(i-1),y(:,i-1),h,Tolit);
     try
         iflag = -1;
     catch

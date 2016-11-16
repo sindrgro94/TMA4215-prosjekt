@@ -19,7 +19,6 @@ TestProblems = {'Linear test problem','Van der Pol equation','The Robertson reac
 
 %h = 0.01;
 tint = [0,1];
-yn = [1;2];
 mu = 50;
 f = {@(t,y) [t - 2*y(1) + y(2) ; t + y(1)- 2*y(2) + 3],...
      @(t,y) [y(2); mu*(1-y(1)^2)*y(2)-y(1)],...
@@ -27,37 +26,60 @@ f = {@(t,y) [t - 2*y(1) + y(2) ; t + y(1)- 2*y(2) + 3],...
              0.04*y(1)-10^4*y(2)*y(3)-3*10^7*y(2)^2;...
              3*10^7*y(2)^2]};
 
-Tolit = 0.5;
-% h = [0];
-% eg = [0];
-% cnt = 1;
-% for i = 1:0.5:5
-%     [eg(1,cnt),y,t] = onestep_solver(f{1},10^-i,tint,yn,Tolit,TestProblems(1));
-%     h(1,cnt) = 10^-i;
-%     cnt = cnt+1;
-% end
+Tolit = 10^-3;
+
+%% Linear Test Equation
+yn = [1,2];
+h = zeros(2,5);
+eg = zeros(2,5);
+cnt = 1;
+for i = 2:0.5:4
+    tic
+    [eg(1,cnt),y,t] = onestep_solver(f{1},10^-i,tint,yn,Tolit,TestProblems(1),mu);
+    h(1,cnt) = 10^-i;
+    cnt = cnt+1;
+    toc
+end
+figure();
+loglog(h(1,:),eg(1,:))
+hold on
+loglog(h(1,:),h(1,:).^2)
+title('Global error estimate for the linear test problem')
+legend('Numeric error','O(h^2)')
 %% Van der Pol
 cnt = 1;
-tint = [0,mu];
 yn = [2;0];
-for i = 2:0.5:5
+for i = 3:0.5:5
     tic
     [eg(2,cnt),y,t] = onestep_solver(f{2},10^-i,tint,yn,Tolit,TestProblems(2),mu);
     h(2,cnt) = 10^-i;
     cnt = cnt+1;
     toc
 end
-%% Plotting
-loglog(h,eg)
+figure();
+loglog(h(2,:),eg(2,:))
 hold on
-loglog(h,h.^2)
-title('Global feil som funskjon av h')
-legend('Nummerisk feil','Stigningstall 2')
+loglog(h(2,:),h(2,:).^2)
+title(sprintf('Global error for %s',TestProblems{2}))
+legend(sprintf('Numeric error with mu = %i',mu),'O(h^2)')
 
-figure()
-plot(y(1),y(2))
-title(TestProblems(1))
-ylim([0,3])
+%% Robertson
+cnt = 1;
+tint = [0,40];
+yn = [1;0;0];
+for i = 4:5
+    tic
+    [eg(3,cnt),y,t] = onestep_solver(f{3},10^-i,tint,yn,Tolit,TestProblems(3),mu);
+    h(3,cnt) = 10^-i;
+    cnt = cnt+1;
+    toc
+end
+figure();
+loglog(h(3,:),eg(3,:))
+hold on
+loglog(h(3,:),h(3,:).^2)
+title('Global error for Robertson equation')
+legend('Numeric error','O(h^2)')
     
 
 
