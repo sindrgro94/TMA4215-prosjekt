@@ -19,7 +19,7 @@ matlabWork15s= zeros(1,10);
 matlabError23s = zeros(1,10);
 matlabWork23s= zeros(1,10);
 for tol = 1:10
-    [t, y, iflag, nfun, njac] = RKs(f, jac, tInt(1), tInt(2), y0, 10^(-tol), h0);
+    [t, y, iflag, nfun, njac] = RKs(f, jac, tInt(1), tInt(2), y0, 10^(-tol), h0,{false});
     stop = find(t==tInt(2));
     ourWork(tol) = nfun+m*njac;
     ourError(tol) = norm(errorEstimator-y(:,stop));

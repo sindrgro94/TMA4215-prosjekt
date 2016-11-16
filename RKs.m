@@ -1,4 +1,4 @@
-function [t, y, iflag, nfun, njac] = RKs(f, jac, t0, tend, y0, Tol, h0)
+function [t, y, iflag, nfun, njac] = RKs(f, jac, t0, tend, y0, Tol, h0,eventLocator)
     nfun = 0;
     njac = 0;
     steps = (tend-t0)/h0*5; %estimation of steps
@@ -24,11 +24,15 @@ function [t, y, iflag, nfun, njac] = RKs(f, jac, t0, tend, y0, Tol, h0)
             if t(step)+h>tend
                 h = tend-t(step);
             end
+            if eventLocator{1} == true
+                if ynext >= eventLocator{2}
+                    return
+                end
+            end
         elseif h<stepTol
                 iflag = -1;
                 return
         else
             h = 0.5*h;
         end
-    end
 end
