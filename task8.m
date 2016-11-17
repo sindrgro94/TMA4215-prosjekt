@@ -15,21 +15,20 @@ Tolit = 10^-2;
 
 %% Linear Test Equation
 yn = [1,2];
-h = zeros(2,2);
+h = zeros(1,2);
 %eg = zeros(2,5);
 cnt = 1;
-for i = 1:0.5:3.5
+for i = 0.5:0.5:4
     tic
-    [~,y4,t,y3] = onestep_solver(f{1},10^-i,tint,yn,Tolit,TestProblems(1),mu);
-    h(1,cnt) = 10^-i;
+    h(cnt) = 10^-i;
+    [y4,y3,t,eg(4,cnt)] = onestep_solver(f{1},h(cnt),tint,yn,Tolit,TestProblems(1),mu);
     opts = odeset('AbsTol', 10^(-12), 'RelTol', 10^(-12));
     %[~, yref] = ode15s(f{1}, tint, yn, opts); %solution to compare with
     yref = g(t(end),6);
     
     eg(1,cnt) = norm(y4(:, end) - yref);
     eg(2,cnt) = norm(y3(:, end) - yref);
-    
-
+    eg(3,cnt) = norm(y3-y4); % Ikke riktig
     cnt = cnt+1;
     toc
 end
@@ -58,7 +57,7 @@ loglog(h(2,:),eg)
 hold on
 loglog(h(2,:),h(2,:).^2)
 title(sprintf('Global error for %s',TestProblems{2}))
-legend(sprintf('Numeric error with mu = %i',mu),'O(h^2)')
+legend(sprintf('Numeric error with mu = %i',mu),'Numeric error with mu = 3','O(h^2)')
 
 %% Robertson
 cnt = 1;

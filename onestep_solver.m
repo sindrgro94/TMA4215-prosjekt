@@ -1,4 +1,4 @@
-function [eg,y4,t,y3] = onestep_solver(f,h,tint,yn,Tolit,testfunction,mu)
+function [y4,y3,t,eg] = onestep_solver(f,h,tint,yn,Tolit,testfunction,mu)
 %% Introduction
 % This script answers task 8
 % For each iteration, calls onestep.m to solve one step of a test problem
@@ -16,22 +16,17 @@ y4 = zeros(length(yn),N);
 y4(:,1) = yn;
 y3 = zeros(length(yn),N);
 y3(:,1) = yn;
-t = zeros(1,N);
-%tn = t(1);
-% Looping trough N steps for finding the solution
-eg = 0; %Error globaly
+t = linspace(tint(1),tint(2),N);
+eg = 0;
 for i = 2:N
-    [t(i), y4(:,i), ~, iflag,~,~,y3(:,i)] = onestep(f,jac,t(i-1),y4(:,i-1),h,Tolit);
+    [t(i), y4(:,i), le, iflag,~,~,y3(:,i)] = onestep(f,jac,t(i-1),y4(:,i-1),h,Tolit);
     try
         iflag = -1;
     catch
         warning('The Newton method ran out of iterations. Reduce stepsize and try again');
         t(i) = 0;
-        %y4 = yn;
     end
-    %y(:,i) = y4;
-    
-    %yn = y4;
+    eg = eg+le;
 end
 %% Plotting section
 
