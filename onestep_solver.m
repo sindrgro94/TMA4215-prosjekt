@@ -19,12 +19,16 @@ y3(:,1) = yn;
 t = linspace(tint(1),tint(2),N);
 for i = 2:N
     [t(i), y4(:,i), ~, iflag,~,~] = onestep(f,jac,t(i-1),y4(:,i-1),h,Tolit);
-    [~,y3(:,i),~,iflag,~,~] = onestep_Y3(f,jac,t(i-1),y3(:,i-1),h,Tolit);
-    try
-        iflag = -1;
-    catch
+    if iflag == -1;
         warning('The Newton method ran out of iterations. Reduce stepsize and try again');
         t(i) = 0;
+        return
+    end
+    [~,y3(:,i),~,iflag,~,~] = onestep_Y3(f,jac,t(i-1),y3(:,i-1),h,Tolit);
+    if iflag == -1;
+        warning('The Newton method ran out of iterations. Reduce stepsize and try again');
+        t(i) = 0;
+        return
     end
     
 end

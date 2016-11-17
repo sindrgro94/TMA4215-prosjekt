@@ -49,7 +49,7 @@ for i = 2:4
     end
 % Finding Yi nummericaly
 
-        while double(norm(DY)) >= Tolit && iteration < maxIterations
+        while double(norm(DY)) >= Tolit && iteration < maxIterations && sum(isfinite(yn))==length(yn)
             DY = J\(h*g*f(tn+c(i)*h,Y(:,i))-Y(:, i) + K(:,i));
             nfun = nfun+1;
             Y(:,i) = Y(:, i) + DY;
@@ -61,7 +61,7 @@ for i = 2:4
         % If true, set returned iflag to 1 and break out of loop
         iflag = 1;
     end
-    if iteration == maxIterations
+    if iteration == maxIterations || sum(isfinite(DY))== 0
         % Testing whether k has ran out of maxIterations
         % If true, sets flag negative and returns to onestep function
         iflag = -1;
