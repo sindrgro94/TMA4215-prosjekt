@@ -72,6 +72,5 @@ end
 le = norm(Y(:, 4) - Y(:, 3));
 tnext = tn + h;
 ynext = Y(:, 4);
-y3 = Y(:, 3);
 
 end
