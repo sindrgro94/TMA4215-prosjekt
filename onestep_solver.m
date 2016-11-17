@@ -32,10 +32,5 @@ for i = 2:N
     end
     
 end
-%% Plotting section
-
-
-
-
 end
 
