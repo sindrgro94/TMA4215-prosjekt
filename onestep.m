@@ -1,4 +1,4 @@
-function [tnext, ynext, le, iflag, nfun, njac] = onestep(f,jac,tn,yn,h,Tolit)
+function [tnext, ynext, le, iflag, nfun, njac,y3] = onestep(f,jac,tn,yn,h,Tolit)
 % [tnext, ynext, le, iflag] = onestep(f, jac, tn, yn, h, Tolit)
 % Do one step with an implicit RK?method method.
 
@@ -72,5 +72,6 @@ end
 le = norm(Y(:, 4) - Y(:, 3));
 tnext = tn + h;
 ynext = Y(:, 4);
+y3 = Y(:, 3);
 
 end
