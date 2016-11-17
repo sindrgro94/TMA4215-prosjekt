@@ -1,4 +1,4 @@
-function [tnext, ynext, le, iflag, nfun, njac] = onestep(f,jac,tn,yn,h,Tolit)
+function [tnext, ynext, le, iflag, nfun, njac] = onestep_Y3(f,jac,tn,yn,h,Tolit)
 % [tnext, ynext, le, iflag] = onestep(f, jac, tn, yn, h, Tolit)
 % Do one step with an implicit RK?method method.
 
@@ -37,7 +37,7 @@ K = zeros(m,4);
 K(:,1) = Y(:,1);
 J = (I - h*g*thisJac);
 %% Calculating Yi
-for i = 2:4
+for i = 2:3
     DY = Inf;
     iteration = 0;
 % Finding Ki
@@ -69,9 +69,7 @@ for i = 2:4
     end
 end
 
-le = norm(Y(:, 4) - Y(:, 3));
 tnext = tn + h;
-ynext = Y(:, 4);
-y3 = Y(:, 3);
+ynext = Y(:, 3);
 
 end

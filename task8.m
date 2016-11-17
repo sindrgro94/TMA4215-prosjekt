@@ -13,69 +13,74 @@ g = @(t,y) [t+exp(-t);t+exp(-t)+1];
 
 Tolit = 10^-2;
 
-%% Linear Test Equation
-yn = [1,2];
-h = zeros(1,2);
-%eg = zeros(2,5);
+% %% Linear Test Equation
+% yn = [1,2];
+% h = zeros(1,2);
+% %eg = zeros(2,5);
+% cnt = 1;
+% for i = 0.5:0.5:4
+%     tic
+%     h(cnt) = 10^-i;
+%     [y4,y3,t] = onestep_solver(f{1},h(cnt),tint,yn,Tolit,TestProblems(1),mu);
+     opts = odeset('AbsTol', 10^(-12), 'RelTol', 10^(-12));
+%     %[~, yref] = ode15s(f{1}, tint, yn, opts); %solution to compare with
+%     yref = g(t(end),6);
+%     eg(1,cnt) = norm(y4(:, end) - yref);
+%     eg(2,cnt) = norm(y3(:, end) - yref);
+%     cnt = cnt+1;
+%     toc
+% end
+% 
+% figure();
+% loglog(h(1,:),eg)
+% hold on
+% loglog(h, h.^2/100)
+% loglog(h, h.^3/1000)
+% title('Global error estimate for the linear test problem')
+% legend('Global error for advancing method','Global error for error estimating method','O(h^2)','O(h^3)')
+% hold off
+% %% Van der Pol
+% cnt = 1;
+% yn = [2;0];
+% eg = zeros(2,4);
+% for i = 2:0.1:4
+%     tic
+%     [y4,y3,t] = onestep_solver(f{2},10^-i,tint,yn,Tolit,TestProblems(2),mu);
+%     h(cnt) = 10^-i;
+%     [~, yref] = ode15s(f{2}, [0,t(end)], yn, opts); %solution to compare with
+%     eg(1,cnt) = norm(y4(:, end) - yref(end,:)');
+%     eg(2,cnt) = norm(y3(:, end) - yref(end,:)');
+%     cnt = cnt+1;
+%     toc
+% end
+% loglog(h,eg)
+% hold on
+% loglog(h,h.^2/50000)
+% loglog(h,h.^3/1000)
+% title(sprintf('Global error for %s',TestProblems{2}))
+% legend('Global error for advancing method','Global error for error estimating method','O(h^2)','O(h^3)')
+
+%% Robertson
 cnt = 1;
-for i = 0.5:0.5:4
+yn = [1;0;0];
+eg = [0;0];
+for i = 3:0.1:5
     tic
     h(cnt) = 10^-i;
-    [y4,y3,t,eg(4,cnt)] = onestep_solver(f{1},h(cnt),tint,yn,Tolit,TestProblems(1),mu);
-    opts = odeset('AbsTol', 10^(-12), 'RelTol', 10^(-12));
-    %[~, yref] = ode15s(f{1}, tint, yn, opts); %solution to compare with
-    yref = g(t(end),6);
-    
-    eg(1,cnt) = norm(y4(:, end) - yref);
-    eg(2,cnt) = norm(y3(:, end) - yref);
-    eg(3,cnt) = norm(y3-y4); % Ikke riktig
-    cnt = cnt+1;
-    toc
-end
-
-figure();
-loglog(h(1,:),eg)
-hold on
-loglog(h(1,:),h(1,:).^3/1000)
-title('Global error estimate for the linear test problem')
-legend('Numeric error Y_4','Numeric error Y_3','O(h^3)')
-hold off
-%% Van der Pol
-cnt = 1;
-yn = [2;0];
-for i = 2:0.1:4
-    tic
-    [~,y4,t,y3] = onestep_solver(f{2},10^-i,tint,yn,Tolit,TestProblems(2),mu);
-    h(2,cnt) = 10^-i;
-    [~, yref] = ode15s(f{2}, [0,t(end)], yn, opts); %solution to compare with
+    [y4,y3,t] = onestep_solver(f{3},h(cnt),tint,yn,Tolit,TestProblems(3),mu);
+    [~,yref] = ode15s(f{3}, [0,t(end)], yn, opts);
     eg(1,cnt) = norm(y4(:, end) - yref(end,:)');
     eg(2,cnt) = norm(y3(:, end) - yref(end,:)');
     cnt = cnt+1;
     toc
 end
-loglog(h(2,:),eg)
+loglog(h,eg)
 hold on
-loglog(h(2,:),h(2,:).^2)
+loglog(h,h.^2)
+loglog(h,h.^3)
 title(sprintf('Global error for %s',TestProblems{2}))
-legend(sprintf('Numeric error with mu = %i',mu),'Numeric error with mu = 3','O(h^2)')
+legend('Global error for advancing method','Global error for error estimating method','O(h^2)','O(h^3)')
 
-%% Robertson
-cnt = 1;
-tint = [0,40];
-yn = [1;0;0];
-for i = 4%:0.5:5
-    tic
-    [eg(3,cnt),y,t] = onestep_solver(f{3},10^-i,tint,yn,Tolit,TestProblems(3),mu);
-    h(3,cnt) = 10^-i;
-    cnt = cnt+1;
-    toc
-end
-figure();
-loglog(h(3,:),eg(3,:))
-hold on
-loglog(h(3,:),h(3,:).^2)
-title('Global error for Robertson equation')
-legend('Numeric error','O(h^2)')
     
 
 
