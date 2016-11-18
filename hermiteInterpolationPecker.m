@@ -1,4 +1,4 @@
-function [tEvent,yEvent] = hermiteInterpolation1(t,y,finding)
+function [tEvent,totEvent] = hermiteInterpolationPecker(t,y,finding)
     h = t(2)-t(1);
     P0 = y(1,1);
     P3 = y(1,2);
