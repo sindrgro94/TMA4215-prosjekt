@@ -33,8 +33,14 @@ function [t, y, iflag, nfun, njac] = RKs(f, jac, t0, tend, y0, Tol, h0,eventLoca
                 h = tend-t(step);
             end
             if eventLocator{1} == true
-                if ynext <= eventLocator{2}
-                    return
+                if strcmp(eventLocator{4},'smaller')
+                    if ynext <= eventLocator{2}
+                        return
+                    end
+                elseif strcmp(eventLocator{4},'bigger')
+                    if ynext>=eventLocator{2}
+                        return
+                    end
                 end
             end
         elseif h<stepTol

@@ -20,3 +20,17 @@ f1 = @(t,O) [O(2); (-c*O(1)+m2*b*g); 0; 0];
 f2 = @(t,O) [O(2); (-c*O(1))/q; O(4); g+m2*b*c*O(1)/(q*m1+m2)];
 Jac1 = @(t,O) [0 1 0 0; -c/(I2+m2*b^2) 0 0 0; 0 0 0 0; 0 0 0 0];
 Jac2 = @(t,O) [0 1 0 0; -c/q 0 0 0; 0 0 0 1; m2*b*c/(q*(m1+m2)) 0 0 0];
+%{use eventlocator, event, max stepsize, event if y is...}
+eventLocatorA = {true,0,1e-3,'smaller'};
+for bounces = 1:5
+    %state a:
+    
+    %state b:
+    
+    %state c:
+    
+    %state d:
+    
+    %state e:
+    
+end
