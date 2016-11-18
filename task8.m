@@ -80,7 +80,7 @@ for i = 3:0.1:4
     tic
     h(cnt) = 10^-i;
     [y4,y3,t] = onestep_solver(f{3},h(cnt),tint,yn,Tolit,TestProblems(3),mu);
-    [~,yref] = ode15s(f{3}, [0,t(end)], yn, opts);
+    [~,yref] = ode45(f{3}, [0,t(end)], yn, opts);
     eg(1,cnt) = norm(y4(:, end) - yref(end,:)');
     eg(2,cnt) = norm(y3(:, end) - yref(end,:)');
     cnt = cnt+1;
