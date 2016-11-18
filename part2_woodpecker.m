@@ -38,23 +38,34 @@ for bounces = 1:5
     %state a:
     [t, O, iflag] = RKs(f1, Jac1, t0, tend, O0, Tol, h0,eventLocatorA);
     if iflag == -1
-        fprintf('Feil i RKs')
+        fprintf('Error in RKs at theta K = %d\n',radtodeg(eventLocatorA{2}))
         return
     end
-    stop = find(O(1,:)<=Ok1);
+    stop = find(O(1,:)<=eventLocatorA{2});
     %find accurate t and O on impact:
-    [tEvent,OEvent] = hermiteInterpolation(t((stop-1):stop),O(:,(stop-1):stop));
-    %y0 = [0;-0.9*y(2,stop-1)];
-    y0 = [0;-0.9*yEvent(2)];
+    [tEvent,OEvent] = hermiteInterpolationPecker(t((stop-1):stop),O(:,(stop-1):stop),eventLocatorA{2});
+    O0 = [Ok1;OEvent(2:4)];
+    %Update answer:
     if bounces == 1
-        ballY = [O(1,(1:stop-1)), yEvent(1)];
-        ballT = [t(1:stop-1), tEvent];
+        woodpeckerO = [O(:,(1:stop-1)), OEvent];
+        woodpeckerT = [t(1:stop-1), tEvent];
     else
-        ballY = [ballY, O(1,(1:stop-1)), yEvent(1)];
-        ballT = [ballT, (ballT(end)+t(1:stop-1)), ballT(end)+tEvent];
+        woodpeckerO = [woodpeckerO, O(:,(1:stop-1)), OEvent];
+        woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
     end 
     %state b:
-    
+    [t, O, iflag] = RKs(f2, Jac2, t0, tend, O0, Tol, h0,eventLocatorB);
+    if iflag == -1
+        fprintf('Error in RKs at theta K = %d\n',radtodeg(eventLocatorB{2}))
+        return
+    end
+    stop = find(O(1,:)<=eventLocatorB{2});
+    %find accurate t and O on impact:
+    [tEvent,OEvent] = hermiteInterpolation(t((stop-1):stop),O(:,(stop-1):stop),eventLocatorB{2});
+    O0 = [-Ok1;OEvent(2:4)];
+    %Update answer:
+    woodpeckerO = [woodpeckerO, O(:,(1:stop-1)), OEvent];
+    woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
     %state c:
     
     %state d:
