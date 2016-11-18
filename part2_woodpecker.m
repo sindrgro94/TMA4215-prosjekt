@@ -68,7 +68,7 @@ for bounces = 1:5
     %find accurate t and O on event:
     [tEvent,OEvent] = hermiteInterpolationPecker(t((stop-1):stop),O(:,(stop-1):stop),eventLocatorB{2});
     %new initial conditions for state c(z speed is 0):
-    O0 = [eventLocatorB{2}; impactSleveTop(OEvent(2),OEvent(4)); OEvent(3); O];
+    O0 = [eventLocatorB{2}; impactSleveTop(OEvent(2),OEvent(4)); OEvent(3); 0];
     %Update answer:
     woodpeckerO = [woodpeckerO, O(:,(1:stop-1)), OEvent];
     woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
