@@ -33,7 +33,10 @@ eventLocatorB = {true,-Ok1,maxStepSize,'smaller'};
 eventLocatorC = {true,-Ok2,maxStepSize,'smaller'};
 eventLocatorD = {true,-Ok1,maxStepSize,'bigger'};
 eventLocatorE = {true,Ok1,maxStepSize,'bigger'};
-
+%impact sleve and beak:?
+impactSleveTop = @(theta_,z_) (1-d2)*(theta_+m2*b/(I2+m2*b^2)*z_);
+impactSleveButtom = @(theta_,z_) (1-d1)*(theta_+m2*b/(I2+m2*b^2)*z_);
+impactBeak = @(theta_) -theta_;
 for bounces = 1:5
     %%%%%%%%%%%STATE A:%%%%%%%%%%%%%%%%
     [t, O, iflag] = RKs(f1, Jac1, t0, tend, O0, Tol, h0,eventLocatorA);
@@ -41,10 +44,11 @@ for bounces = 1:5
         fprintf('Error in RKs at theta K = %d\n',radtodeg(eventLocatorA{2}))
         return
     end
-    stop = find(O(1,:)<=eventLocatorA{2});
+    stop = find(O(1,:)<eventLocatorA{2});
     %find accurate t and O on event:
     [tEvent,OEvent] = hermiteInterpolationPecker(t((stop-1):stop),O(:,(stop-1):stop),eventLocatorA{2});
-    O0 = [eventLocatorA{2};OEvent(2:4)];
+    %new initial conditions for state b:
+    O0 = [eventLocatorA{2}; OEvent(2:4)];
     %Update answer:
     if bounces == 1
         woodpeckerO = [O(:,(1:stop-1)), OEvent];
@@ -60,10 +64,11 @@ for bounces = 1:5
         fprintf('Error in RKs at theta K = %d\n',radtodeg(eventLocatorB{2}))
         return
     end
-    stop = find(O(1,:)<=eventLocatorB{2});
+    stop = find(O(1,:)<eventLocatorB{2});
     %find accurate t and O on event:
     [tEvent,OEvent] = hermiteInterpolationPecker(t((stop-1):stop),O(:,(stop-1):stop),eventLocatorB{2});
-    O0 = [eventLocatorB{2};OEvent(2:4)];
+    %new initial conditions for state c(z speed is 0):
+    O0 = [eventLocatorB{2}; impactSleveTop(OEvent(2),OEvent(4)); OEvent(3); O];
     %Update answer:
     woodpeckerO = [woodpeckerO, O(:,(1:stop-1)), OEvent];
     woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
@@ -74,10 +79,11 @@ for bounces = 1:5
         fprintf('Error in RKs at theta K = %d\n',radtodeg(eventLocatorC{2}))
         return
     end
-    stop = find(O(1,:)<=eventLocatorC{2});
+    stop = find(O(1,:)<eventLocatorC{2});
     %find accurate t and O on event:
     [tEvent,OEvent] = hermiteInterpolationPecker(t((stop-1):stop),O(:,(stop-1):stop),eventLocatorC{2});
-    O0 = [eventLocatorC{2};OEvent(2:4)];
+    %new initial conditions for state d:
+    O0 = [eventLocatorC{2};impactBeak(OEvent(2)); OEvent(3:4)];
     %Update answer:
     woodpeckerO = [woodpeckerO, O(:,(1:stop-1)), OEvent];
     woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
@@ -88,10 +94,11 @@ for bounces = 1:5
         fprintf('Error in RKs at theta K = %d\n',radtodeg(eventLocatorD{2}))
         return
     end
-    stop = find(O(1,:)>=eventLocatorD{2});
+    stop = find(O(1,:)>eventLocatorD{2});
     %find accurate t and O on event:
     [tEvent,OEvent] = hermiteInterpolationPecker(t((stop-1):stop),O(:,(stop-1):stop),eventLocatorD{2});
-    O0 = [eventLocatorD{2};OEvent(2:4)];
+    %new initial conditions for state e:
+    O0 = [eventLocatorC{2}; OEvent(2:4)];
     %Update answer:
     woodpeckerO = [woodpeckerO, O(:,(1:stop-1)), OEvent];
     woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
@@ -102,10 +109,11 @@ for bounces = 1:5
         fprintf('Error in RKs at theta K = %d\n',radtodeg(eventLocatorE{2}))
         return
     end
-    stop = find(O(1,:)>=eventLocatorE{2});
+    stop = find(O(1,:)>eventLocatorE{2});
     %find accurate t and O on impact:
     [tEvent,OEvent] = hermiteInterpolationPecker(t((stop-1):stop),O(:,(stop-1):stop),eventLocatorE{2});
-    O0 = [eventLocatorE{2};OEvent(2:4)];
+    %new initial conditions for state a(z speed is 0):
+    O0 = [eventLocatorB{2};impactSleveBottom(OEvent(2),OEvent(4)); OEvent(3); 0];
     %Update answer:
     woodpeckerO = [woodpeckerO, O(:,(1:stop-1)), OEvent];
     woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
