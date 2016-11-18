@@ -35,7 +35,7 @@ eventLocatorD = {true,-Ok1,maxStepSize,'bigger'};
 eventLocatorE = {true,Ok1,maxStepSize,'bigger'};
 
 for bounces = 1:5
-    %state a:
+    %%%%%%%%%%%STATE A:%%%%%%%%%%%%%%%%
     [t, O, iflag] = RKs(f1, Jac1, t0, tend, O0, Tol, h0,eventLocatorA);
     if iflag == -1
         fprintf('Error in RKs at theta K = %d\n',radtodeg(eventLocatorA{2}))
@@ -54,7 +54,7 @@ for bounces = 1:5
         woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
     end 
     
-    %state b:
+     %%%%%%%%%%%STATE B:%%%%%%%%%%%%%%%%
     [t, O, iflag] = RKs(f2, Jac2, t0, tend, O0, Tol, h0,eventLocatorB);
     if iflag == -1
         fprintf('Error in RKs at theta K = %d\n',radtodeg(eventLocatorB{2}))
@@ -68,7 +68,7 @@ for bounces = 1:5
     woodpeckerO = [woodpeckerO, O(:,(1:stop-1)), OEvent];
     woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
     
-    %state c:
+     %%%%%%%%%%%STATE C:%%%%%%%%%%%%%%%%
     [t, O, iflag] = RKs(f1, Jac1, t0, tend, O0, Tol, h0,eventLocatorC);
     if iflag == -1
         fprintf('Error in RKs at theta K = %d\n',radtodeg(eventLocatorC{2}))
@@ -82,7 +82,7 @@ for bounces = 1:5
     woodpeckerO = [woodpeckerO, O(:,(1:stop-1)), OEvent];
     woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
     
-    %state d:
+     %%%%%%%%%%%STATE D:%%%%%%%%%%%%%%%%
     [t, O, iflag] = RKs(f1, Jac1, t0, tend, O0, Tol, h0,eventLocatorD);
     if iflag == -1
         fprintf('Error in RKs at theta K = %d\n',radtodeg(eventLocatorD{2}))
@@ -96,7 +96,7 @@ for bounces = 1:5
     woodpeckerO = [woodpeckerO, O(:,(1:stop-1)), OEvent];
     woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
     
-    %state e:
+     %%%%%%%%%%%STATE E:%%%%%%%%%%%%%%%%
     [t, O, iflag] = RKs(f2, Jac2, t0, tend, O0, Tol, h0,eventLocatorE);
     if iflag == -1
         fprintf('Error in RKs at theta K = %d\n',radtodeg(eventLocatorE{2}))
