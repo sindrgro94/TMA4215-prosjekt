@@ -11,7 +11,6 @@ jac = jacobi(testfunction{1},mu); %Her vil du f? riktig jacobi, men det er
     %en funksjon av t og y, s? du m? gi inn t og hele y.
 
 %% Calling one step function
-iflag = 0;
 y4 = zeros(length(yn),N);
 y4(:,1) = yn;
 y3 = zeros(length(yn),N);
