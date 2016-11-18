@@ -1,0 +1,12 @@
+function [a,m1,d1,Ok1,I2,b,m2,d2,Ok2,c,g] = constants()
+a = 0.025; %m
+m1 = 0.0003; %kg
+d1 = 0.18335;
+Ok1 = degtorad(10); %degrees
+I2 = 7*10^-7; %kgm^2
+b = 0.015; %m
+m2 = 0.0045; %kg
+d2 = 0.04766;
+Ok2 = degtorad(12); %degrees
+c = 0.0056;%Nm
+g = 9.81; %m/s^2
