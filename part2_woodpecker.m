@@ -5,26 +5,54 @@ clc;
 a = 0.025; %m
 m1 = 0.0003; %kg
 d1 = 0.18335;
-Ok1 = 10; %degrees
+Ok1 = degtorad(10); %degrees
 I2 = 7*10^-7; %kgm^2
 b = 0.015; %m
 m2 = 0.0045; %kg
 d2 = 0.04766;
-Ok2 = 12; %degrees
+Ok2 = degtorad(12); %degrees
 c = 0.0056;%Nm
 g = 9.81; %m/s^2
 q = I2+m2*b^2*(1-m2/(m1+m2));
-%O0 = [
+maxStepSize = 10^-1;
+%initial conditions:
+t0 = 0;
+tend = 10; %must be large enough.
+Tol=10^-8;
+h0=maxStepSize;
+O0 = [degtorad(35);0;0;0];
 %phase a,c, d:
-f1 = @(t,O) [O(2); (-c*O(1)+m2*b*g); 0; 0];
-f2 = @(t,O) [O(2); (-c*O(1))/q; O(4); g+m2*b*c*O(1)/(q*m1+m2)];
+f1 = @(t,O) [O(2); (-c*O(1)+m2*b*g)/(I2+m2*b^2); 0; 0];
 Jac1 = @(t,O) [0 1 0 0; -c/(I2+m2*b^2) 0 0 0; 0 0 0 0; 0 0 0 0];
+%phase b,e:
+f2 = @(t,O) [O(2); (-c*O(1))/q; O(4); g+m2*b*c*O(1)/(q*m1+m2)];
 Jac2 = @(t,O) [0 1 0 0; -c/q 0 0 0; 0 0 0 1; m2*b*c/(q*(m1+m2)) 0 0 0];
-%{use eventlocator, event, max stepsize, event if y is...}
-eventLocatorA = {true,0,1e-3,'smaller'};
+%{use eventlocator, event, max stepsize, an event if y is ... than event}
+eventLocatorA = {true,Ok1,maxStepSize,'smaller'};
+eventLocatorB = {true,-Ok1,maxStepSize,'smaller'};
+eventLocatorC = {true,-Ok2,maxStepSize,'smaller'};
+eventLocatorD = {true,-Ok1,maxStepSize,'bigger'};
+eventLocatorE = {true,Ok1,maxStepSize,'bigger'};
+
 for bounces = 1:5
     %state a:
-    
+    [t, O, iflag] = RKs(f1, Jac1, t0, tend, O0, Tol, h0,eventLocatorA);
+    if iflag == -1
+        fprintf('Feil i RKs')
+        return
+    end
+    stop = find(O(1,:)<=Ok1);
+    %find accurate t and O on impact:
+    [tEvent,OEvent] = hermiteInterpolation(t((stop-1):stop),O(:,(stop-1):stop));
+    %y0 = [0;-0.9*y(2,stop-1)];
+    y0 = [0;-0.9*yEvent(2)];
+    if bounces == 1
+        ballY = [O(1,(1:stop-1)), yEvent(1)];
+        ballT = [t(1:stop-1), tEvent];
+    else
+        ballY = [ballY, O(1,(1:stop-1)), yEvent(1)];
+        ballT = [ballT, (ballT(end)+t(1:stop-1)), ballT(end)+tEvent];
+    end 
     %state b:
     
     %state c:

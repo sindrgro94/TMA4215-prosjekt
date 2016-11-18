@@ -20,7 +20,6 @@ function [t, y, iflag, nfun, njac] = RKs(f, jac, t0, tend, y0, Tol, h0,eventLoca
         [tnext, ynext, le, iflag, funEv, jacEv] = onestep(f,jac,t(step),y(:,step),h,newtonTol);
         nfun = nfun + funEv;
         njac = njac + jacEv;
-        %[tnext, ynext, le, iflag] = onestep_old(f,jac,t(step),y(:,step),h,newtonTol);
         if iflag == 1 && le<Tol
             t(step+1) = tnext;
             y(:,step+1) = ynext;
@@ -34,11 +33,11 @@ function [t, y, iflag, nfun, njac] = RKs(f, jac, t0, tend, y0, Tol, h0,eventLoca
             end
             if eventLocator{1} == true
                 if strcmp(eventLocator{4},'smaller')
-                    if ynext <= eventLocator{2}
+                    if ynext(1) <= eventLocator{2}
                         return
                     end
                 elseif strcmp(eventLocator{4},'bigger')
-                    if ynext>=eventLocator{2}
+                    if ynext(1) >= eventLocator{2}
                         return
                     end
                 end

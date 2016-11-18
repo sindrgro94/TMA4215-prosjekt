@@ -4,14 +4,13 @@ close all;
 clc;
 y0 = [10;0];
 f = @(t,y) [y(2); -9.81];
-%{use eventlocator, event, max stepsize, event if y is...}
+%{use eventlocator, event, max stepsize, an event if y is ... than event}
 eventLocator = {true,0,1e-3,'smaller'};
-
 jac = @(t,y) [0 1; 0 0];
 t0=0;
 tend=100;
 Tol=10^-8;
-h0=10^-2;
+h0=10^-4;
 for bounces = 1:40
     [t, y, iflag, nfun, njac] = RKs(f, jac, t0, tend, y0, Tol, h0,eventLocator);
     stop = find(y(1,:)<0);
