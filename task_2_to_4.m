@@ -1,9 +1,9 @@
 function [x, stab, stabHat] = task_2_to_4()
-
 %% Establishes the butcher tableu 
+clear all
 g = sym('g','real'); %gamma
 c = [0; 2*g; 1; 1];
-bHat = [(-4*g^2+6*g-1)/(4*g); (-2*g+1)/(4*g); g; 0];
+bHat = [(-4*g^2 + 6*g - 1)/(4*g); (-2*g + 1)/(4*g); g; 0];
 b = [(6*g-1)/(12*g); -1/(12*g*(2*g-1)); (-6*g^2+6*g-1)/(3*(2*g-1)); g];
 A = [0,0,0,0;...
     g,g,0,0;...
@@ -29,9 +29,9 @@ k3 = l*(yn+h*(A(3,1)*k1+A(3,2)*k2))/(1-h*l*A(3,3));
 k4 = l*(yn+h*(A(4,1)*k1+A(4,2)*k2+A(4,3)*k3))/(1-h*l*A(4,4));
 %% Creating stability function R(z)
 yn_1= simplify(yn+h*(b(1)*k1+b(2)*k2+b(3)*k3+b(4)*k4));
-yn_1h = simplify(yn+h*(bHat(1)*k1+bHat(2)*k2+bHat(3)*k3+bHat(4)*k4));
-yn_1 = subs(yn_1, l*h, z);
-yn_1h = subs(yn_1h,l*h,z);
+yn_1h = simplify(yn + h*(bHat(1)*k1 + bHat(2)*k2 + bHat(3)*k3 + bHat(4)*k4));
+yn_1 = subs(yn_1, h*l, z)
+yn_1h = subs(yn_1h,h*l,z)
 %% Answering task 2, finding R(z) and R^(z)
 R(z,g) = yn_1/yn;
 Rh(z,g) = yn_1h/yn;
