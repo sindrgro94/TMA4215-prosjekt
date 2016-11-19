@@ -26,4 +26,11 @@ for bounces = 1:40
         ballT = [ballT, (ballT(end)+t(1:stop-1)), ballT(end)+tEvent];
     end 
 end
+h = figure;
+hold on
 plot(ballT,ballY)
+xlabel('Time [s]')
+ylabel('Height [m]')
+set(gca,'fontsize',15)
+hold off
+saveTightFigure(h,'Figures/bouncing_ball.pdf')
