@@ -29,7 +29,7 @@ function [tEvent,totEvent] = hermiteInterpolationPecker(t,y,finding)
         3*Q1*((1-theta)^2-2*theta*(1-theta))+3*Q2*(2*(1-theta)*theta-theta^2);
     zEvent = [Bz(tEvent);Bzder(tEvent)];
     
-    totEvent = [yEvent;zEvent];
+    totEvent = [yEvent;zEvent/h];
     
     
     
