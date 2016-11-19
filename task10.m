@@ -32,13 +32,13 @@ for tol = 1:10
     matlabError23s(tol) = norm(errorEstimator-matlabRK.y(:,end));
 end
 fig = figure; %work vs error
-loglog(ourWork,ourError,'*b')
+loglog(ourWork,ourError,'*-b')
 hold on
-loglog(matlabWork15s,matlabError15s,'*r')
-loglog(matlabWork23s,matlabError23s,'*g')
+loglog(matlabWork15s,matlabError15s,'*-r')
+loglog(matlabWork23s,matlabError23s,'*-g')
 xlabel('Work = nfun + m \cdot njac')
 ylabel('Error')
 legend('RKs.m and onestep.m','ode15s','ode23s');
 title('Work-precision diagram')
 set(gca,'fontsize',15)
-%saveTightFigure(fig,'task10.pdf')
+saveTightFigure(fig,'Figures/task10.pdf')
