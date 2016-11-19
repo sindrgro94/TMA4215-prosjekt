@@ -12,16 +12,16 @@ f = {@(t,y) [t - 2*y(1) + y(2) ; t + y(1)- 2*y(2) + 3],...
 g = @(t,y) [t+exp(-t);t+exp(-t)+1]; %Analytic solution for the test problem
 
 Tolit = 10^-8;
+opts = odeset('AbsTol', 10^(-12), 'RelTol', 10^(-12));
 
 %% Linear Test Equation
 yn = [1,2];
 h = zeros(1,2);
 cnt = 1;
-for i = 0.5:0.5:3.5
+for i = 0.5:0.1:4.5
     tic
     h(cnt) = 10^-i;
     [y4,y3,t] = onestep_solver(f{1},h(cnt),tint,yn,Tolit,TestProblems(1),mu);
-    opts = odeset('AbsTol', 10^(-12), 'RelTol', 10^(-12));
     yref = g(t(end),6);
     eg(1,cnt) = norm(y4(:, end) - yref);
     eg(2,cnt) = norm(y3(:, end) - yref);
@@ -29,15 +29,18 @@ for i = 0.5:0.5:3.5
     toc
 end
 
-figure();
-loglog(h(1,:),eg)
+
+loglog(h(1,:),eg(1,:),'x-b');
 hold on
+loglog(h(1,:),eg(2,:),'x-r')
 loglog(h, h.^2/100)
 loglog(h, h.^3/1000)
 title('Global error estimate for the linear test problem')
-legend('Global error for advancing method','Global error for error estimating method','O(h^2)','O(h^3)')
+legend('||e_N|| for advancing method','||e_N|| for error estimating method','O(h^2)','O(h^3)')
+xlabel('h')
+ylabel('||e_N||')
+xlim([10^-4.5,10^-0.5])
 hold off
-
 ordY4 = polyfit(log(h),log(eg(1,:)),1);
 ordY3 = polyfit(log(h),log(eg(2,:)),1);
 
@@ -47,7 +50,7 @@ cnt = 1;
 yn = [2;0];
 eg = zeros(2,4);
 h = [0];
-for i = 2:0.1:3.5
+for i = 2:0.1:4
     tic
     [y4,y3,t] = onestep_solver(f{2},10^-i,tint,yn,Tolit,TestProblems(2),mu);
     h(cnt) = 10^-i;
@@ -58,12 +61,16 @@ for i = 2:0.1:3.5
     toc
 end
 figure();
-loglog(h,eg)
+loglog(h(1,:),eg(1,:),'x-b');
 hold on
+loglog(h(1,:),eg(2,:),'x-r')
 loglog(h,h.^2/50000)
 loglog(h,h.^3/1000)
 title(sprintf('Global error for %s',TestProblems{2}))
-legend('Global error for advancing method','Global error for error estimating method','O(h^2)','O(h^3)')
+legend('||e_N|| for advancing method','||e_N|| for error estimating method','O(h^2)','O(h^3)')
+xlabel('h')
+ylabel('||e_N||')
+xlim([10^-4,10^-2])
 hold off
 
 ordY4 = polyfit(log(h),log(eg(1,:)),1);
@@ -76,7 +83,7 @@ cnt = 1;
 yn = [1;0;0];
 eg = [0;0];
 h = [0];
-for i = 3:0.1:4
+for i = 3:0.1:4.2
     tic
     h(cnt) = 10^-i;
     [y4,y3,t] = onestep_solver(f{3},h(cnt),tint,yn,Tolit,TestProblems(3),mu);
@@ -87,12 +94,16 @@ for i = 3:0.1:4
     toc
 end
 figure();
-loglog(h,eg)
+loglog(h(1,:),eg(1,:),'x-b');
 hold on
+loglog(h(1,:),eg(2,:),'x-r')
 loglog(h,h.^2/1000)
 loglog(h,h.^3/10)
-title(sprintf('Global error for %s',TestProblems{2}))
-legend('Global error for advancing method','Global error for error estimating method','O(h^2)','O(h^3)')
+title(sprintf('Global error for %s',TestProblems{3}))
+legend('||e_N|| for advancing method','||e_N|| for error estimating method','O(h^2)','O(h^3)')
+xlabel('h')
+ylabel('||e_N||')
+xlim([10^-4.2,10^-3])
 hold off
 
 ordY4 = polyfit(log(h),log(eg(1,:)),1);
