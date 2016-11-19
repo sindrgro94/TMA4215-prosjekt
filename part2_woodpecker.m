@@ -25,7 +25,7 @@ O0 = [degtorad(35);0;0;0];
 f1 = @(t,O) [O(2); (-c*O(1)+m2*b*g)/(I2+m2*b^2); 0; 0];
 Jac1 = @(t,O) [0 1 0 0; -c/(I2+m2*b^2) 0 0 0; 0 0 0 0; 0 0 0 0];
 %phase b,e:
-f2 = @(t,O) [O(2); (-c*O(1))/q; O(4); g+m2*b*c*O(1)/(q*m1+m2)];
+f2 = @(t,O) [O(2); (-c*O(1))/q; O(4); g + m2*b*c*O(1)/(q*(m1+m2))];
 Jac2 = @(t,O) [0 1 0 0; -c/q 0 0 0; 0 0 0 1; m2*b*c/(q*(m1+m2)) 0 0 0];
 %{use eventlocator, event, max stepsize, an event if y is ... than event}
 eventLocatorA = {true,Ok1,maxStepSize,'smaller'};
@@ -35,9 +35,10 @@ eventLocatorD = {true,-Ok1,maxStepSize,'bigger'};
 eventLocatorE = {true,Ok1,maxStepSize,'bigger'};
 %impact sleve and beak:?
 impactSleveTop = @(theta_,z_) (1-d2)*(theta_+m2*b/(I2+m2*b^2)*z_);
-impactSleveBottom = @(theta_,z_) (1-d1)*(theta_+m2*b/(I2+m2*b^2)*z_);
+impactSleveBottom = @(theta_,z_) (1-d1)*(theta_+((m2*b)/(I2+m2*b^2)*z_));
 impactBeak = @(theta_) -theta_;
-for bounces = 1:10
+for bounces = 1:5
+    disp(bounces)
     %%%%%%%%%%%STATE A:%%%%%%%%%%%%%%%%
     [t, O, iflag] = RKs(f1, Jac1, t0, tend, O0, Tol, h0,eventLocatorA);
     if iflag == -1
