@@ -7,7 +7,7 @@ q = I2+m2*b^2*(1-m2/(m1+m2));
 maxStepSize = 10^-1;
 %initial conditions:
 t0 = 0;
-tend = 10; %must be large enough.
+tend = 1; %must be large enough.
 Tol=10^-8;
 h0=maxStepSize;
 O0 = [degtorad(10);25;0;0];
@@ -23,13 +23,15 @@ eventLocatorB = {true,-Ok1,maxStepSize,'smaller'};
 eventLocatorC = {true,-Ok2,maxStepSize,'smaller'};
 eventLocatorD = {true,-Ok1,maxStepSize,'bigger'};
 eventLocatorE = {true,Ok1,maxStepSize,'bigger'};
-%impact sleve and beak:?
-impactSleveTop = @(theta_,z_) (1-d1)*(theta_+m2*b/(I2+m2*b^2)*z_);
-impactSleveBottom = @(theta_,z_) (1-d2)*(theta_+((m2*b)/(I2+m2*b^2)*z_));
+%impact sleve and beak:
+impactSleveTop = @(theta_,z_) (1-d2)*(theta_+m2*b/(I2+m2*b^2)*z_);
+impactSleveBottom = @(theta_,z_) (1-d1)*(theta_+((m2*b)/(I2+m2*b^2)*z_));
 impactBeak = @(theta_) -theta_;
-figure();
-hold on
-for bounces = 1:30
+%modified model:
+% impactSleveTop = @(theta_,z_) (1-d1)*(theta_+m2*b/(I2+m2*b^2)*z_);
+% impactSleveBottom = @(theta_,z_) (1-d2)*(theta_+((m2*b)/(I2+m2*b^2)*z_));
+
+for bounces = 1:3
     disp(bounces)
     %%%%%%%%%%%STATE A:%%%%%%%%%%%%%%%%
     [t, O, iflag] = RKs(f1, Jac1, t0, tend, O0, Tol, h0,eventLocatorA);
@@ -112,9 +114,27 @@ for bounces = 1:30
     woodpeckerO = [woodpeckerO, O(:,(1:stop-1)), OEvent];
     woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
 end
+angleVel = figure;
+hold on
 plot(woodpeckerO(1,:),woodpeckerO(2,:))
-figure();
+xlabel('Angle [Degrees]')
+ylabel('Angular Velocity [rad/s]')
+set(gca,'fontsize',15)
+hold off
+heightTime = figure;
+hold on
 plot(woodpeckerT,-woodpeckerO(3,:))
-figure();
-plot(woodpeckerT,woodpeckerO(1,:))
-
+ylabel('Height [m]')
+xlabel('Time [s]')
+set(gca,'fontsize',15)
+hold off
+angleTime = figure;
+hold on
+plot(woodpeckerT,radtodeg(woodpeckerO(1,:)))
+xlabel('Time [s]')
+ylabel('Angle [Degrees]')
+set(gca,'fontsize',15)
+hold off
+%saveTightFigure(angleVel,'Figures/angleVelocity_wrong.fig')
+%saveTightFigure(heightTime,'Figures/heightTime_wrong.fig')
+%saveTightFigure(angleTime,'Figures/angleTime_wrong.fig')
