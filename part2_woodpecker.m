@@ -10,7 +10,7 @@ t0 = 0;
 tend = 10; %must be large enough.
 Tol=10^-8;
 h0=maxStepSize;
-O0 = [degtorad(35);0;0;0];
+O0 = [degtorad(10);25;0;0];
 %phase a,c, d:
 f1 = @(t,O) [O(2); (-c*O(1)+m2*b*g)/(I2+m2*b^2); 0; 0];
 Jac1 = @(t,O) [0 1 0 0; -c/(I2+m2*b^2) 0 0 0; 0 0 0 0; 0 0 0 0];
@@ -24,10 +24,12 @@ eventLocatorC = {true,-Ok2,maxStepSize,'smaller'};
 eventLocatorD = {true,-Ok1,maxStepSize,'bigger'};
 eventLocatorE = {true,Ok1,maxStepSize,'bigger'};
 %impact sleve and beak:?
-impactSleveTop = @(theta_,z_) (1-d2)*(theta_+m2*b/(I2+m2*b^2)*z_);
-impactSleveBottom = @(theta_,z_) (1-d1)*(theta_+((m2*b)/(I2+m2*b^2)*z_));
+impactSleveTop = @(theta_,z_) (1-d1)*(theta_+m2*b/(I2+m2*b^2)*z_);
+impactSleveBottom = @(theta_,z_) (1-d2)*(theta_+((m2*b)/(I2+m2*b^2)*z_));
 impactBeak = @(theta_) -theta_;
-for bounces = 1:5
+figure();
+hold on
+for bounces = 1:30
     disp(bounces)
     %%%%%%%%%%%STATE A:%%%%%%%%%%%%%%%%
     [t, O, iflag] = RKs(f1, Jac1, t0, tend, O0, Tol, h0,eventLocatorA);
@@ -48,6 +50,8 @@ for bounces = 1:5
         woodpeckerO = [woodpeckerO, O(:,(1:stop-1)), OEvent];
         woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
     end 
+%plot(radtodeg(O(1,(1:stop-1))),O(2,(1:stop-1)))
+%hold on
      %%%%%%%%%%%STATE B:%%%%%%%%%%%%%%%%
     [t, O, iflag] = RKs(f2, Jac2, t0, tend, O0, Tol, h0,eventLocatorB);
     if iflag == -1
@@ -62,7 +66,7 @@ for bounces = 1:5
     %Update answer:
     woodpeckerO = [woodpeckerO, O(:,(1:stop-1)), OEvent];
     woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
-    
+   % plot(radtodeg(O(1,(1:stop-1))),O(2,(1:stop-1)))
      %%%%%%%%%%%STATE C:%%%%%%%%%%%%%%%%
     [t, O, iflag] = RKs(f1, Jac1, t0, tend, O0, Tol, h0,eventLocatorC);
     if iflag == -1
@@ -73,11 +77,11 @@ for bounces = 1:5
     %find accurate t and O on event:
     [tEvent,OEvent] = hermiteInterpolationPecker(t((stop-1):stop),O(:,(stop-1):stop),eventLocatorC{2});
     %new initial conditions for state d:
-    O0 = [eventLocatorC{2};impactBeak(OEvent(2)); OEvent(3:4)];
+    O0 = [eventLocatorC{2};impactBeak(OEvent(2)); OEvent(3);0];
     %Update answer:
     woodpeckerO = [woodpeckerO, O(:,(1:stop-1)), OEvent];
     woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
-    
+%plot(radtodeg(O(1,(1:stop-1))),O(2,(1:stop-1)))
      %%%%%%%%%%%STATE D:%%%%%%%%%%%%%%%%
     [t, O, iflag] = RKs(f1, Jac1, t0, tend, O0, Tol, h0,eventLocatorD);
     if iflag == -1
@@ -88,11 +92,11 @@ for bounces = 1:5
     %find accurate t and O on event:
     [tEvent,OEvent] = hermiteInterpolationPecker(t((stop-1):stop),O(:,(stop-1):stop),eventLocatorD{2});
     %new initial conditions for state e:
-    O0 = [eventLocatorD{2}; OEvent(2:4)];
+    O0 = [eventLocatorD{2}; OEvent(2:3);0];
     %Update answer:
     woodpeckerO = [woodpeckerO, O(:,(1:stop-1)), OEvent];
     woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
-    
+%plot(radtodeg(O(1,(1:stop-1))),O(2,(1:stop-1)))
      %%%%%%%%%%%STATE E:%%%%%%%%%%%%%%%%
     [t, O, iflag] = RKs(f2, Jac2, t0, tend, O0, Tol, h0,eventLocatorE);
     if iflag == -1
@@ -108,3 +112,9 @@ for bounces = 1:5
     woodpeckerO = [woodpeckerO, O(:,(1:stop-1)), OEvent];
     woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
 end
+plot(woodpeckerO(1,:),woodpeckerO(2,:))
+figure();
+plot(woodpeckerT,-woodpeckerO(3,:))
+figure();
+plot(woodpeckerT,woodpeckerO(1,:))
+
