@@ -31,7 +31,7 @@ impactBeak = @(theta_) -theta_;
 % impactSleveTop = @(theta_,z_) (1-d1)*(theta_+m2*b/(I2+m2*b^2)*z_);
 % impactSleveBottom = @(theta_,z_) (1-d2)*(theta_+((m2*b)/(I2+m2*b^2)*z_));
 
-for bounces = 1:3
+for bounces = 1:10
     disp(bounces)
     %%%%%%%%%%%STATE A:%%%%%%%%%%%%%%%%
     [t, O, iflag] = RKs(f1, Jac1, t0, tend, O0, Tol, h0,eventLocatorA);
@@ -75,7 +75,14 @@ for bounces = 1:3
         fprintf('Error in RKs at theta K = %d\n',radtodeg(eventLocatorC{2}))
         return
     end
-    stop = find(O(1,:)<eventLocatorC{2});
+    if t(end) ~= tend %in case it did not reach the pole
+        stop = find(O(1,:)<eventLocatorC{2});
+    else
+        woodpeckerO = [woodpeckerO, O(:,:)];
+        woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t)];
+        fprintf('The woodpecker did not reach the pole\n');
+        return
+    end
     %find accurate t and O on event:
     [tEvent,OEvent] = hermiteInterpolationPecker(t((stop-1):stop),O(:,(stop-1):stop),eventLocatorC{2});
     %new initial conditions for state d:
@@ -83,7 +90,6 @@ for bounces = 1:3
     %Update answer:
     woodpeckerO = [woodpeckerO, O(:,(1:stop-1)), OEvent];
     woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
-%plot(radtodeg(O(1,(1:stop-1))),O(2,(1:stop-1)))
      %%%%%%%%%%%STATE D:%%%%%%%%%%%%%%%%
     [t, O, iflag] = RKs(f1, Jac1, t0, tend, O0, Tol, h0,eventLocatorD);
     if iflag == -1
@@ -98,7 +104,6 @@ for bounces = 1:3
     %Update answer:
     woodpeckerO = [woodpeckerO, O(:,(1:stop-1)), OEvent];
     woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
-%plot(radtodeg(O(1,(1:stop-1))),O(2,(1:stop-1)))
      %%%%%%%%%%%STATE E:%%%%%%%%%%%%%%%%
     [t, O, iflag] = RKs(f2, Jac2, t0, tend, O0, Tol, h0,eventLocatorE);
     if iflag == -1
@@ -135,6 +140,6 @@ xlabel('Time [s]')
 ylabel('Angle [Degrees]')
 set(gca,'fontsize',15)
 hold off
-%saveTightFigure(angleVel,'Figures/angleVelocity_wrong.fig')
-%saveTightFigure(heightTime,'Figures/heightTime_wrong.fig')
-%saveTightFigure(angleTime,'Figures/angleTime_wrong.fig')
+% saveTightFigure(angleVel,'Figures/angleVelocity_modified.pdf')
+% saveTightFigure(heightTime,'Figures/heightTime_modified.pdf')
+% saveTightFigure(angleTime,'Figures/angleTime_modified.pdf')
