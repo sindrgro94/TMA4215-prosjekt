@@ -4,6 +4,7 @@ close all;
 clc;
 [a,m1,d1,Ok1,I2,b,m2,d2,Ok2,c,g] = constants();
 q = I2+m2*b^2*(1-m2/(m1+m2));
+g = -g;
 maxStepSize = 10^-1;
 %initial conditions:
 t0 = 0;
@@ -24,8 +25,8 @@ eventLocatorC = {true,-Ok2,maxStepSize,'smaller'};
 eventLocatorD = {true,-Ok1,maxStepSize,'bigger'};
 eventLocatorE = {true,Ok1,maxStepSize,'bigger'};
 %impact sleve and beak:
-impactSleveTop = @(theta_,z_) (1-d2)*(theta_+m2*b/(I2+m2*b^2)*z_);
-impactSleveBottom = @(theta_,z_) (1-d1)*(theta_+((m2*b)/(I2+m2*b^2)*z_));
+impactSleveTop = @(theta_,z_) (1-d2)*(theta_+m2*b/(I2+m2*b^2)*(-z_));
+impactSleveBottom = @(theta_,z_) (1-d1)*(theta_+((m2*b)/(I2+m2*b^2)*(-z_)));
 impactBeak = @(theta_) -theta_;
 %modified model:
 % impactSleveTop = @(theta_,z_) (1-d1)*(theta_+m2*b/(I2+m2*b^2)*z_);
@@ -68,7 +69,6 @@ for bounces = 1:10
     %Update answer:
     woodpeckerO = [woodpeckerO, O(:,(1:stop-1)), OEvent];
     woodpeckerT = [woodpeckerT, (woodpeckerT(end)+t(1:stop-1)), woodpeckerT(end)+tEvent];
-   % plot(radtodeg(O(1,(1:stop-1))),O(2,(1:stop-1)))
      %%%%%%%%%%%STATE C:%%%%%%%%%%%%%%%%
     [t, O, iflag] = RKs(f1, Jac1, t0, tend, O0, Tol, h0,eventLocatorC);
     if iflag == -1
@@ -121,14 +121,14 @@ for bounces = 1:10
 end
 angleVel = figure;
 hold on
-plot(woodpeckerO(1,:),woodpeckerO(2,:))
+plot(radtodeg(woodpeckerO(1,:)),woodpeckerO(2,:))
 xlabel('Angle [Degrees]')
 ylabel('Angular Velocity [rad/s]')
 set(gca,'fontsize',15)
 hold off
 heightTime = figure;
 hold on
-plot(woodpeckerT,-woodpeckerO(3,:))
+plot(woodpeckerT,woodpeckerO(3,:))
 ylabel('Height [m]')
 xlabel('Time [s]')
 set(gca,'fontsize',15)
@@ -140,6 +140,6 @@ xlabel('Time [s]')
 ylabel('Angle [Degrees]')
 set(gca,'fontsize',15)
 hold off
-% saveTightFigure(angleVel,'Figures/angleVelocity_modified.pdf')
+% saveTightFigure(angleVel,'Figures/angleVelocity_wrong.pdf')
 % saveTightFigure(heightTime,'Figures/heightTime_modified.pdf')
 % saveTightFigure(angleTime,'Figures/angleTime_modified.pdf')
