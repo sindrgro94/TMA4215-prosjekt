@@ -32,7 +32,7 @@ impactBeak = @(theta_) -theta_;
 % impactSleveTop = @(theta_,z_) (1-d1)*(theta_+m2*b/(I2+m2*b^2)*z_);
 % impactSleveBottom = @(theta_,z_) (1-d2)*(theta_+((m2*b)/(I2+m2*b^2)*z_));
 
-for bounces = 1:10
+for bounces = 1:15
     disp(bounces)
     %%%%%%%%%%%STATE A:%%%%%%%%%%%%%%%%
     [t, O, iflag] = RKs(f1, Jac1, t0, tend, O0, Tol, h0,eventLocatorA);
@@ -124,22 +124,22 @@ hold on
 plot(radtodeg(woodpeckerO(1,:)),woodpeckerO(2,:))
 xlabel('Angle [Degrees]')
 ylabel('Angular Velocity [rad/s]')
-set(gca,'fontsize',15)
+set(gca,'fontsize',18)
 hold off
 heightTime = figure;
 hold on
 plot(woodpeckerT,woodpeckerO(3,:))
 ylabel('Height [m]')
 xlabel('Time [s]')
-set(gca,'fontsize',15)
+set(gca,'fontsize',18)
 hold off
 angleTime = figure;
 hold on
 plot(woodpeckerT,radtodeg(woodpeckerO(1,:)))
 xlabel('Time [s]')
 ylabel('Angle [Degrees]')
-set(gca,'fontsize',15)
+set(gca,'fontsize',18)
 hold off
-% saveTightFigure(angleVel,'Figures/angleVelocity_wrong.pdf')
+% saveTightFigure(angleVel,'Figures/angleVelocity_modified.pdf')
 % saveTightFigure(heightTime,'Figures/heightTime_modified.pdf')
 % saveTightFigure(angleTime,'Figures/angleTime_modified.pdf')
