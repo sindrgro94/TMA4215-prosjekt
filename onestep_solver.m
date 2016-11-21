@@ -6,10 +6,9 @@ function [y4,y3,t] = onestep_solver(f,h,tint,yn,Tolit,testfunction,mu)
 
 %% Initializing constants and callings
 N = ceil((tint(2)-tint(1))/h)+1;
-%% Finner Jacobi
-jac = jacobi(testfunction{1},mu); %Her vil du f? riktig jacobi, men det er 
-    %en funksjon av t og y, s? du m? gi inn t og hele y.
-
+%% Finds Jacobi
+jac = jacobi(testfunction{1},mu);
+    
 %% Calling one step function
 y4 = zeros(length(yn),N);
 y4(:,1) = yn;

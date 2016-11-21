@@ -4,7 +4,7 @@ close all;
 clc;
 y0 = [10;0];
 f = @(t,y) [y(2); -9.81];
-%{use eventlocator, event, max stepsize, an event if y is ... than event}
+%{use eventlocator?, event, max stepsize, an event if y is ... than event}
 eventLocator = {true,0,1e-3,'smaller'};
 jac = @(t,y) [0 1; 0 0];
 t0=0;

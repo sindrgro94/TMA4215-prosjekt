@@ -15,7 +15,7 @@ function [t, y, iflag, nfun, njac] = RKs(f, jac, t0, tend, y0, Tol, h0,eventLoca
         maxStepSize = inf;
     end
     P = 0.8; %pessimist factor
-    stepTol = 10^(-15); %no idea what this should be.
+    stepTol = 10^(-15); 
     while t(step)<tend
         [tnext, ynext, le, iflag, funEv, jacEv] = onestep(f,jac,t(step),y(:,step),h,newtonTol);
         nfun = nfun + funEv;

@@ -26,7 +26,7 @@ for i = 1:3
         fig = figure;
         subplot(2,1,1)
         hold on
-        set(gca,'fontsize',15)
+        set(gca,'fontsize',18)
         title(TestProblems{i});
         k = size(y);
         if i==2
@@ -49,7 +49,7 @@ for i = 1:3
         plot(t(1:stop-1),(t(2:stop)-t(1:stop-1)),'.'); 
         xlabel('t')
         ylabel('Stepsize')
-        set(gca,'fontsize',15)
+        set(gca,'fontsize',18)
         %saveTightFigure(fig,TestProblems{i})
     else
         fprintf(TestProblems{i});
